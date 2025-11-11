@@ -1,0 +1,45 @@
+{
+  "about": "I'm a software engineer passionate about building innovative solutions and creating meaningful user experiences. I love working with modern web technologies and exploring new possibilities in the digital world.",
+  "experience": [
+    {
+      "title": "Software Engineer",
+      "company": "Tech Company",
+      "period": "2023 - Present",
+      "description": "Developed and maintained web applications using React and Node.js"
+    },
+    {
+      "title": "Intern",
+      "company": "Startup Inc",
+      "period": "2022 - 2023",
+      "description": "Assisted in building frontend components and improving user interface"
+    },
+    {
+      "title": "Student Developer",
+      "company": "University Project",
+      "period": "2021 - 2022",
+      "description": "Worked on various academic projects involving full-stack development"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Project Alpha",
+      "description": "A full-stack web application built with Next.js and TypeScript",
+      "tech": ["Next.js", "TypeScript", "Tailwind CSS"]
+    },
+    {
+      "name": "Project Beta",
+      "description": "A mobile app for task management with real-time synchronization",
+      "tech": ["React Native", "Firebase", "Redux"]
+    },
+    {
+      "name": "Project Gamma",
+      "description": "An API service for data processing and analytics",
+      "tech": ["Node.js", "Express", "MongoDB"]
+    }
+  ],
+  "links": {
+    "x": "",
+    "linkedin": "",
+    "github": ""
+  }
+}
