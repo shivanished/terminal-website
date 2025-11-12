@@ -124,8 +124,8 @@ export default function Home() {
               <div className="ml-4 space-y-1">
                 <div><span className="text-[#00ff00]">shiv --help</span>     <span className="text-gray-400">-</span> Show this help message</div>
                 <div><span className="text-[#00ff00]">shiv about</span>      <span className="text-gray-400">-</span> Display information about me</div>
-                <div><span className="text-[#00ff00]">shiv experience</span> <span className="text-gray-400">-</span> Show my work experience</div>
-                <div><span className="text-[#00ff00]">shiv projects</span>   <span className="text-gray-400">-</span> List my projects</div>
+                <div><span className="text-[#00ff00]">shiv experience</span> <span className="text-gray-400">-</span> Show my work experience (use <span className="text-[#00ff00]">--verbose</span> for all)</div>
+                <div><span className="text-[#00ff00]">shiv projects</span>   <span className="text-gray-400">-</span> List my projects (use <span className="text-[#00ff00]">--verbose</span> for all)</div>
                 <div><span className="text-[#00ff00]">shiv contact</span>    <span className="text-gray-400">-</span> List contact options</div>
               </div>
             </div>
@@ -136,13 +136,17 @@ export default function Home() {
           } else {
             output = <div className="text-gray-300">{aboutData}</div>;
           }
-        } else if (args === 'experience') {
+        } else if (args === 'experience' || args.startsWith('experience ')) {
           if (!dataLoaded) {
             output = 'Loading...';
           } else {
+            const isVerbose = args.includes('--verbose') || args.includes('-v');
+            const displayExperiences = isVerbose ? experienceData : experienceData.slice(0, 4);
+            const hasMore = experienceData.length > 4 && !isVerbose;
+            
             output = (
               <div className="space-y-4 text-gray-300">
-                {experienceData.map((exp, idx) => (
+                {displayExperiences.map((exp, idx) => (
                 <div key={idx} className="ml-2">
                   <div className="font-semibold text-[#5dade2]">{exp.title} - {exp.company}</div>
                   <div className="text-gray-500 text-sm">{exp.period}</div>
@@ -157,22 +161,36 @@ export default function Home() {
                   )}
                 </div>
               ))}
+              {hasMore && (
+                <div className="ml-2 mt-4 text-gray-500 italic text-sm">
+                  Showing 4 of {experienceData.length} experiences. Use <span className="text-[#00ff00]">shiv experience --verbose</span> to see all.
+                </div>
+              )}
               </div>
             );
           }
-        } else if (args === 'projects') {
+        } else if (args === 'projects' || args.startsWith('projects ')) {
           if (!dataLoaded) {
             output = 'Loading...';
           } else {
+            const isVerbose = args.includes('--verbose') || args.includes('-v');
+            const displayProjects = isVerbose ? projectsData : projectsData.slice(0, 4);
+            const hasMore = projectsData.length > 4 && !isVerbose;
+            
             output = (
               <div className="space-y-4 text-gray-300">
-                {projectsData.map((project, idx) => (
+                {displayProjects.map((project, idx) => (
                 <div key={idx} className="ml-2">
                   <div className="font-semibold text-[#bb8fce]">{project.name}</div>
                   <div className="ml-4 mt-1">• {project.description}</div>
                   <div className="ml-4 text-sm text-gray-500">Tech: {project.tech.join(', ')}</div>
                 </div>
               ))}
+              {hasMore && (
+                <div className="ml-2 mt-4 text-gray-500 italic text-sm">
+                  Showing 4 of {projectsData.length} projects. Use <span className="text-[#00ff00]">shiv projects --verbose</span> to see all.
+                </div>
+              )}
               </div>
             );
           }
