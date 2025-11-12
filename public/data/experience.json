@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Software Engineer",
+    "company": "Tech Company",
+    "period": "2023 - Present",
+    "description": "Developed and maintained web applications using React and Node.js"
+  },
+  {
+    "title": "Intern",
+    "company": "Startup Inc",
+    "period": "2022 - 2023",
+    "description": "Assisted in building frontend components and improving user interface"
+  },
+  {
+    "title": "Student Developer",
+    "company": "University Project",
+    "period": "2021 - 2022",
+    "description": "Worked on various academic projects involving full-stack development"
+  }
+]

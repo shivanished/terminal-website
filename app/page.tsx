@@ -1,23 +1,87 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import data from '../data.json';
 
 interface CommandOutput {
   type: 'command' | 'output' | 'error';
   content: string | React.ReactNode;
 }
 
+interface Experience {
+  title: string;
+  company: string;
+  period: string;
+  description: string;
+}
+
+interface Project {
+  name: string;
+  description: string;
+  tech: string[];
+}
+
+interface Links {
+  x: string;
+  linkedin: string;
+  github: string;
+}
+
 export default function Home() {
   const [commandHistory, setCommandHistory] = useState<CommandOutput[]>([]);
   const [currentInput, setCurrentInput] = useState('');
-  const [commandIndex, setCommandIndex] = useState(0);
+  const [aboutData, setAboutData] = useState<string>('');
+  const [experienceData, setExperienceData] = useState<Experience[]>([]);
+  const [projectsData, setProjectsData] = useState<Project[]>([]);
+  const [linksData, setLinksData] = useState<Links>({ x: '', linkedin: '', github: '' });
+  const [dataLoaded, setDataLoaded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Load JSON data from public/data directory
+    const loadData = async () => {
+      try {
+        const [aboutRes, experienceRes, projectsRes, linksRes] = await Promise.all([
+          fetch('/data/about.json'),
+          fetch('/data/experience.json'),
+          fetch('/data/projects.json'),
+          fetch('/data/links.json')
+        ]);
+
+        const about = await aboutRes.json();
+        const experience = await experienceRes.json();
+        const projects = await projectsRes.json();
+        const links = await linksRes.json();
+
+        setAboutData(about);
+        setExperienceData(experience);
+        setProjectsData(projects);
+        setLinksData(links);
+        setDataLoaded(true);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  useEffect(() => {
     // Focus input on mount
     inputRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    // Focus input when window gains focus
+    const handleFocus = () => {
+      inputRef.current?.focus();
+    };
+
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
   }, []);
 
   useEffect(() => {
@@ -39,6 +103,13 @@ export default function Home() {
 
     const [command, args] = parseCommand(trimmedInput);
 
+    // Handle clear command separately - don't add to history
+    if (command === 'clear') {
+      setCommandHistory([]);
+      setCurrentInput('');
+      return;
+    }
+
     // Add command to history
     setCommandHistory(prev => [...prev, { type: 'command', content: trimmedInput }]);
 
@@ -55,66 +126,96 @@ export default function Home() {
                 <div><span className="text-[#00ff00]">shiv about</span>      <span className="text-gray-400">-</span> Display information about me</div>
                 <div><span className="text-[#00ff00]">shiv experience</span> <span className="text-gray-400">-</span> Show my work experience</div>
                 <div><span className="text-[#00ff00]">shiv projects</span>   <span className="text-gray-400">-</span> List my projects</div>
-                <div><span className="text-[#00ff00]">shiv email</span>      <span className="text-gray-400">-</span> Open email client</div>
-                <div><span className="text-[#00ff00]">shiv message</span>    <span className="text-gray-400">-</span> Open messages app</div>
-                <div><span className="text-[#00ff00]">shiv x</span>          <span className="text-gray-400">-</span> Open X (Twitter) profile</div>
-                <div><span className="text-[#00ff00]">shiv linkedin</span>   <span className="text-gray-400">-</span> Open LinkedIn profile</div>
-                <div><span className="text-[#00ff00]">shiv github</span>     <span className="text-gray-400">-</span> Open GitHub profile</div>
+                <div><span className="text-[#00ff00]">shiv contact</span>    <span className="text-gray-400">-</span> List contact options</div>
               </div>
             </div>
           );
         } else if (args === 'about') {
-          output = <div className="text-gray-300">{data.about}</div>;
+          if (!dataLoaded) {
+            output = 'Loading...';
+          } else {
+            output = <div className="text-gray-300">{aboutData}</div>;
+          }
         } else if (args === 'experience') {
-          output = (
-            <div className="space-y-4 text-gray-300">
-              {data.experience.map((exp, idx) => (
+          if (!dataLoaded) {
+            output = 'Loading...';
+          } else {
+            output = (
+              <div className="space-y-4 text-gray-300">
+                {experienceData.map((exp, idx) => (
                 <div key={idx} className="ml-2">
                   <div className="font-semibold text-[#5dade2]">{exp.title} - {exp.company}</div>
                   <div className="text-gray-500 text-sm">{exp.period}</div>
                   <div className="ml-4 mt-1">• {exp.description}</div>
                 </div>
               ))}
-            </div>
-          );
+              </div>
+            );
+          }
         } else if (args === 'projects') {
-          output = (
-            <div className="space-y-4 text-gray-300">
-              {data.projects.map((project, idx) => (
+          if (!dataLoaded) {
+            output = 'Loading...';
+          } else {
+            output = (
+              <div className="space-y-4 text-gray-300">
+                {projectsData.map((project, idx) => (
                 <div key={idx} className="ml-2">
                   <div className="font-semibold text-[#bb8fce]">{project.name}</div>
                   <div className="ml-4 mt-1">• {project.description}</div>
                   <div className="ml-4 text-sm text-gray-500">Tech: {project.tech.join(', ')}</div>
                 </div>
               ))}
+              </div>
+            );
+          }
+        } else if (args === 'contact') {
+          output = (
+            <div className="space-y-2 text-gray-300">
+              <div className="text-gray-400 italic text-sm mb-2">
+                To contact me, type "shiv contact" followed by one of the options below. 
+                For example: "shiv contact --email" or "shiv contact -e" (both work the same way).
+              </div>
+              <div className="text-white font-semibold">Contact options:</div>
+              <div className="ml-4 space-y-1">
+                <div><span className="text-[#00ff00]">--email</span> <span className="text-gray-400">or</span> <span className="text-[#00ff00]">-e</span> <span className="text-gray-400">-</span> Open email client</div>
+                <div><span className="text-[#00ff00]">--message</span> <span className="text-gray-400">or</span> <span className="text-[#00ff00]">-m</span> <span className="text-gray-400">-</span> Open messages app</div>
+                <div><span className="text-[#00ff00]">-x</span> <span className="text-gray-400">-</span> Open X (Twitter) profile</div>
+                <div><span className="text-[#00ff00]">--linkedin</span> <span className="text-gray-400">or</span> <span className="text-[#00ff00]">-l</span> <span className="text-gray-400">-</span> Open LinkedIn profile</div>
+                <div><span className="text-[#00ff00]">--github</span> <span className="text-gray-400">or</span> <span className="text-[#00ff00]">-g</span> <span className="text-gray-400">-</span> Open GitHub profile</div>
+              </div>
             </div>
           );
-        } else if (args === 'email') {
-          window.location.href = 'mailto:shivanshsoni@berkeley.edu';
-          output = 'Opening email client...';
-        } else if (args === 'message') {
-          window.location.href = 'sms:+19516422354';
-          output = 'Opening messages app...';
-        } else if (args === 'x') {
-          if (data.links.x) {
-            window.open(data.links.x, '_blank');
-            output = 'Opening X profile...';
+        } else if (args.startsWith('contact ')) {
+          const contactArg = args.substring(8).trim(); // Remove "contact " prefix
+          if (contactArg === '--email' || contactArg === '-e') {
+            window.location.href = 'mailto:shivanshsoni@berkeley.edu';
+            output = 'Opening email client...';
+          } else if (contactArg === '--message' || contactArg === '-m') {
+            window.location.href = 'sms:+19516422354';
+            output = 'Opening messages app...';
+          } else if (contactArg === '-x') {
+            if (linksData.x) {
+              window.open(linksData.x, '_blank');
+              output = 'Opening X profile...';
+            } else {
+              output = 'X link not configured yet.';
+            }
+          } else if (contactArg === '--linkedin' || contactArg === '-l') {
+            if (linksData.linkedin) {
+              window.open(linksData.linkedin, '_blank');
+              output = 'Opening LinkedIn profile...';
+            } else {
+              output = 'LinkedIn link not configured yet.';
+            }
+          } else if (contactArg === '--github' || contactArg === '-g') {
+            if (linksData.github) {
+              window.open(linksData.github, '_blank');
+              output = 'Opening GitHub profile...';
+            } else {
+              output = 'GitHub link not configured yet.';
+            }
           } else {
-            output = 'X link not configured yet.';
-          }
-        } else if (args === 'linkedin') {
-          if (data.links.linkedin) {
-            window.open(data.links.linkedin, '_blank');
-            output = 'Opening LinkedIn profile...';
-          } else {
-            output = 'LinkedIn link not configured yet.';
-          }
-        } else if (args === 'github') {
-          if (data.links.github) {
-            window.open(data.links.github, '_blank');
-            output = 'Opening GitHub profile...';
-          } else {
-            output = 'GitHub link not configured yet.';
+            output = `Invalid contact option: ${contactArg}. Use "shiv contact" to see available options.`;
           }
         } else if (!args) {
           output = 'Type "shiv --help" to see available commands.';
@@ -134,7 +235,6 @@ export default function Home() {
       content: output 
     }]);
     setCurrentInput('');
-    setCommandIndex(0);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -161,8 +261,16 @@ export default function Home() {
     );
   };
 
+  const handleContainerClick = () => {
+    // Focus input when clicking on the container
+    inputRef.current?.focus();
+  };
+
   return (
-    <div className="min-h-screen bg-[#1e1e1e] text-[#00ff00] font-mono p-6 text-sm">
+    <div 
+      className="min-h-screen bg-[#1e1e1e] text-[#00ff00] font-mono p-6 text-sm cursor-text"
+      onClick={handleContainerClick}
+    >
       <div 
         ref={terminalRef}
         className="max-w-4xl mx-auto h-screen overflow-y-auto pb-20"
@@ -195,7 +303,14 @@ export default function Home() {
             value={currentInput}
             onChange={(e) => setCurrentInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex-1 bg-transparent outline-none text-white caret-[#00ff00] min-w-0"
+            onBlur={(e) => {
+              // Immediately refocus when input loses focus
+              setTimeout(() => {
+                e.target.focus();
+              }, 0);
+            }}
+            className="flex-1 bg-transparent outline-none text-white caret-[#00ff00] min-w-0 terminal-cursor"
+            style={{ caretShape: 'block' }}
             autoFocus
             spellCheck={false}
           />
