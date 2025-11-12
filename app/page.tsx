@@ -11,7 +11,7 @@ interface Experience {
   title: string;
   company: string;
   period: string;
-  description: string;
+  description: string | string[];
 }
 
 interface Project {
@@ -146,7 +146,15 @@ export default function Home() {
                 <div key={idx} className="ml-2">
                   <div className="font-semibold text-[#5dade2]">{exp.title} - {exp.company}</div>
                   <div className="text-gray-500 text-sm">{exp.period}</div>
-                  <div className="ml-4 mt-1">• {exp.description}</div>
+                  {Array.isArray(exp.description) ? (
+                    <div className="ml-4 mt-1 space-y-1">
+                      {exp.description.map((desc, descIdx) => (
+                        <div key={descIdx}>• {desc}</div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="ml-4 mt-1">• {exp.description}</div>
+                  )}
                 </div>
               ))}
               </div>

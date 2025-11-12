@@ -1,17 +1,52 @@
 [
   {
-    "name": "Project Alpha",
-    "description": "A full-stack web application built with Next.js and TypeScript",
-    "tech": ["Next.js", "TypeScript", "Tailwind CSS"]
+    "name": "Posthuman",
+    "description": "\"Upload you consciousness to the blockchain.\" Posthuman ensures your digital legacy lives on with AI-powered estate management, secure asset delegation, and blockchain-backed will execution that seamlessly handles your affairs when you no longer can. Posthuman secure's your legacy with AI-powered features like Legally-Executable Will Generation, Asset Identification/Tracking, Agentic Subscriptions Cancelling, Posthumous Chat, AI-generated Media of Loved One, and Blockchain Integration for Trustability/Verifiability.",
+    "tech": ["AI", "Blockchain", "Estate Management", "Legal Tech"]
   },
   {
-    "name": "Project Beta",
-    "description": "A mobile app for task management with real-time synchronization",
-    "tech": ["React Native", "Firebase", "Redux"]
+    "name": "FormPix",
+    "description": "A Chrome extension that automates filling online legal forms (USCIS) by extracting information from images of documents. Utilized image processing algorithms (OCR) to accurately parse images for data and classification to populate form fields. Used by two law firms.",
+    "tech": ["Chrome Extension", "OCR", "Image Processing", "Legal Tech"]
   },
   {
-    "name": "Project Gamma",
-    "description": "An API service for data processing and analytics",
-    "tech": ["Node.js", "Express", "MongoDB"]
+    "name": "Docker Contract - Berkeley Nutritional Meal Generator",
+    "description": "An AI-powered MERN Stack web app that uses two in-house trained RNNs to create a meal plan for a Berkeley Student based on the day's dining hall menu and dietary preferences (i.e. vegetarian, bulking, paleo, etc.). Goal was to showcase Docker's ability/ease-of-use in enabling a microservices architecture, especially for implementing AI whilst penetrating/growing the use of Docker in the college/high-school developer demographic.",
+    "tech": ["MERN Stack", "Docker", "RNN", "Microservices", "AI"]
+  },
+  {
+    "name": "High-Frequency Tactile Transducer",
+    "description": "A device that translates audio signals (especially high-frequency audio) into tactile sensations for audibly impaired individuals, creating a more complete musical experience. The mission is to enable individuals to experience, not only the bass in music, but treble as well.",
+    "tech": ["Hardware", "Signal Processing", "Accessibility"]
+  },
+  {
+    "name": "Survive! - The Game",
+    "description": "A Java game. Your plane crash landed. You're stuck on the island Fugaji. You're cold, alone, and hungry. Atleast there's fruit around. Eat them to survive!",
+    "tech": ["Java", "Game Development"]
+  },
+  {
+    "name": "S1XT33N - Voice Controlled Car",
+    "description": "A robot car built with breadboards, wires, and wheels that listens to voice commands then drives on that command's pre-determined path. Employed Digital-to-Analog and Analog-to-Digital Converters, motion sensors, band-pass filter circuits, System ID, Principal Compenent Analysis, and Singular Value Decomposition to build, test, and tune the car.",
+    "tech": ["Hardware", "Signal Processing", "Robotics", "Control Systems"]
+  },
+  {
+    "name": "Blue Origin - Blue Alchemist Financial Strategy",
+    "description": "Conducted market and industry research/company SWOT analysis to develop an innovative go-to-market strategy for the rapid commercialization of Blue Origin's in-situ solar panel-producing lunar module Blue Alchemist. Provided multiple opportunities - short-term/long-term solutions; Calculated projected financials (i.e. profit over time, depreciation, etc.) to assess viability and sustainability",
+    "tech": ["Market Research", "Financial Analysis", "Strategy"]
+  },
+  {
+    "name": "2write.app",
+    "description": "A web-app writing software that uses AI to supplement user-inputted text for essay writing. 2write.app implements AI to support users in writing essays by generating prompts/outlines, completing sentences, and suggesting ideas. This creates an experience that facilitates higher quality writing that's undetectable as AI.",
+    "tech": ["Web App", "AI", "Writing Software"]
+  },
+  {
+    "name": "FoodShelf",
+    "description": "Designed and developed a native iOS app using SwiftUI and Apple's CoreML to classify leftover foods and determine how long they can be stored or composted.",
+    "tech": ["iOS", "SwiftUI", "CoreML", "Machine Learning"]
+  },
+  {
+    "name": "Disease Diagnosing Statistical Classification Algorithm",
+    "description": "Developed a Python program that uses statistical classification methods to determine what diseases a person might have based on their symptoms. I prioritized diseases prevalent in less-developed countries (i.e. Malaria, Tuberculosis, etc.) to offer a solution for individuals in medically underserved areas.",
+    "tech": ["Python", "Statistical Classification", "Machine Learning", "Healthcare"]
   }
 ]
