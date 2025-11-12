@@ -276,12 +276,12 @@ export default function Home() {
 
   return (
     <div 
-      className="min-h-screen bg-[#1e1e1e] text-[#00ff00] font-mono p-6 text-sm cursor-text"
+      className="h-screen w-screen overflow-hidden bg-[#1e1e1e] text-[#00ff00] font-mono p-6 text-sm cursor-text"
       onClick={handleContainerClick}
     >
       <div 
         ref={terminalRef}
-        className="max-w-4xl mx-auto h-screen overflow-y-auto pb-20"
+        className="max-w-4xl mx-auto h-full overflow-y-auto terminal-scroll"
       >
         <div className="space-y-2 mb-4">
           {commandHistory.length === 0 && (

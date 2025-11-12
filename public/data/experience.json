@@ -29,16 +29,6 @@
     ]
   },
   {
-    "title": "Technical Consultant",
-    "company": "Docker, Berkeley, CA",
-    "period": "March 2024 – May 2024",
-    "description": [
-      "Ideated and co-developed an AI-powered MERN Stack web app to showcase Docker's ability/ease-of-use in enabling a microservices architecture (especially for implementing AI)",
-      "Developed REST APIs for the backend (Node/Express) & AI models (TensorFlow/Flask) microservices; Hosted on Google Cloud Run",
-      "Documented the developer journey through text documentation and short-form vertical video content (250k+ impacts)"
-    ]
-  },
-  {
     "title": "Front-End Software Engineer Intern",
     "company": "Homeland Justice Systems, Riverside, CA",
     "period": "June 2022 – August 2022",
