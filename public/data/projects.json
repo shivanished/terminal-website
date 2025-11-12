@@ -1,18 +1,23 @@
 [
   {
-    "name": "Posthuman",
-    "description": "\"Upload you consciousness to the blockchain.\" Posthuman ensures your digital legacy lives on with AI-powered estate management, secure asset delegation, and blockchain-backed will execution that seamlessly handles your affairs when you no longer can. Posthuman secure's your legacy with AI-powered features like Legally-Executable Will Generation, Asset Identification/Tracking, Agentic Subscriptions Cancelling, Posthumous Chat, AI-generated Media of Loved One, and Blockchain Integration for Trustability/Verifiability.",
-    "tech": ["AI", "Blockchain", "Estate Management", "Legal Tech"]
+    "name": "Fashion:Week",
+    "description": "Scroll-based Archive Fashion Platform - Merged w/ Lowheads (10M+ ARR). React Native + Expo mobile frontends, Supabase relational/vector databases, Powersync data synchronization. Trained collaborative-filtering based recommender system using Pytorch -- powered by on-demand Modal clusters; Semantic search infra: 1M+ CLIP embedding vectors + cosine similarity querying + hybrid BM25-α reranking.",
+    "tech": ["React Native", "Expo", "Supabase", "Pytorch", "Modal", "CLIP", "Vector Search", "Recommender Systems"]
   },
   {
     "name": "FormPix",
-    "description": "A Chrome extension that automates filling online legal forms (USCIS) by extracting information from images of documents. Utilized image processing algorithms (OCR) to accurately parse images for data and classification to populate form fields. Used by two law firms.",
-    "tech": ["Chrome Extension", "OCR", "Image Processing", "Legal Tech"]
+    "description": "On-Device-Inference-Powered USCIS Form Filler Chrome Extension. Used Tesseract OCR + Liquid AI LFM2-350M to extract data from files and automate USCIS online form filling. Conducted interviews with legal/immigration firms to diagnose pain points -- Contracts with 3 law firms.",
+    "tech": ["Chrome Extension", "OCR", "Tesseract", "Liquid AI", "LFM2-350M", "Legal Tech"]
   },
   {
     "name": "Docker Contract - Berkeley Nutritional Meal Generator",
-    "description": "An AI-powered MERN Stack web app that uses two in-house trained RNNs to create a meal plan for a Berkeley Student based on the day's dining hall menu and dietary preferences (i.e. vegetarian, bulking, paleo, etc.). Goal was to showcase Docker's ability/ease-of-use in enabling a microservices architecture, especially for implementing AI whilst penetrating/growing the use of Docker in the college/high-school developer demographic.",
-    "tech": ["MERN Stack", "Docker", "RNN", "Microservices", "AI"]
+    "description": "College Student Developer Relations Project - 250k+ Social Media Impacts. Built AI-powered MERN-stack web app + trained RNN models to create personalized meal plans for Berkeley students based on dining hall menu/dietary preference; Designed microservice architecture enabled by Docker. REST APIs for the backend (Node/Express) & AI models (TensorFlow/Flask) microservices; Hosted on GCP.",
+    "tech": ["MERN Stack", "Docker", "RNN", "Microservices", "AI", "Node.js", "Express", "TensorFlow", "Flask", "GCP"]
+  },
+  {
+    "name": "Posthuman",
+    "description": "\"Upload you consciousness to the blockchain.\" Posthuman ensures your digital legacy lives on with AI-powered estate management, secure asset delegation, and blockchain-backed will execution that seamlessly handles your affairs when you no longer can. Posthuman secure's your legacy with AI-powered features like Legally-Executable Will Generation, Asset Identification/Tracking, Agentic Subscriptions Cancelling, Posthumous Chat, AI-generated Media of Loved One, and Blockchain Integration for Trustability/Verifiability.",
+    "tech": ["AI", "Blockchain", "Estate Management", "Legal Tech", "Next.js"]
   },
   {
     "name": "High-Frequency Tactile Transducer",
