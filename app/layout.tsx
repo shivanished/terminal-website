@@ -13,8 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Shiv's Terminal",
-  description: "Personal website styled as a terminal",
+  title: "Shivansh Soni",
+  description: "Personal website",
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export default function RootLayout({
