@@ -37,9 +37,10 @@ export default function Home() {
   const [projectsData, setProjectsData] = useState<Project[]>([]);
   const [linksData, setLinksData] = useState<Links>({ x: '', linkedin: '', github: '' });
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [windowWidth, setWindowWidth] = useState<number>(0);
   const terminalInstanceRef = useRef<any>(null);
 
-  const asciiArt = [
+  const asciiArtLarge = [
 "                                                                                      ",
 "                                                                                      ",
 "  .--.--.     ,---,                                                         ,---,     ",
@@ -68,6 +69,34 @@ export default function Home() {
 "                                   ---`-'                                              ",
 "                                                                                      "
 ].join("\n");
+
+  const asciiArtMed = [
+" .----..-. .-..-..-. .-.  .--.  .-. .-. .----..-. .-.",
+"{ {__  | {_} || || | | | / {} \\ |  `| |{ {__  | {_} |",
+".-._} }| { } || |\\ \\_/ //  /\\  \\| |\\  |.-._} }| { } |",
+"`----' `-' `-'`-' `---' `-'  `-'`-' `-'`----' `-' `-'",
+" .----. .----. .-. .-..-.",
+"{ {__  /  {}  \\|  `| || |",
+".-._} }\\      /| |\\  || |",
+"`----'  `----' `-' `-'`-'",
+""
+].join('\n');
+  const asciiArtSmall = `
+▄▖▌ ▘        ▌ 
+▚ ▛▌▌▌▌▀▌▛▌▛▘▛▌
+▄▌▌▌▌▚▘█▌▌▌▄▌▌▌
+               
+▄▖    ▘        
+▚ ▛▌▛▌▌        
+▄▌▙▌▌▌▌        
+               `;
+
+  useEffect(() => {
+    // Set initial window width once on mount
+    if (typeof window !== 'undefined') {
+      setWindowWidth(window.innerWidth);
+    }
+  }, []);
 
   useEffect(() => {
     // Load JSON data from public/data directory
@@ -143,9 +172,17 @@ export default function Home() {
               `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options`
           });
         } else if (!args) {
+          let displayContent: string;
+          if (windowWidth >= 885) {
+            displayContent = `${colors.brightGreen}${asciiArtLarge}${colors.reset}`;
+          } else if (windowWidth >= 548) {
+            displayContent = `${colors.brightGreen}${asciiArtMed}${colors.reset}`;
+          } else {
+            displayContent = `${colors.brightGreen}${asciiArtSmall}${colors.reset}`;
+          }
           outputs.push({
             type: 'output',
-            content: `${colors.brightGreen}${asciiArt}${colors.reset}\n\nWelcome to Shiv's terminal. Type "shiv --help" to get started.`
+            content: `${displayContent}\n\nWelcome to Shiv's terminal. Type "shiv --help" to get started.`
           });
         } else if (args === 'about') {
           if (!dataLoaded) {
