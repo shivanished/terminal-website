@@ -33,17 +33,39 @@ body {
   font-family: var(--font-mono), 'Courier New', monospace;
 }
 
-.terminal-cursor {
-  caret-shape: block;
-  caret-color: #00ff00;
+/* Terminal container styling */
+#terminal {
+  height: 100%;
+  width: 100%;
+}
+
+/* xterm.js cursor styling - ensure block cursor is visible */
+.xterm-cursor-layer {
+  z-index: 10;
+}
+
+.xterm-cursor {
+  background-color: #00ff00 !important;
+  color: #000000 !important;
+}
+
+/* Ensure terminal fills the viewport */
+.xterm {
+  height: 100%;
+  width: 100%;
+}
+
+.xterm-viewport {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* Hide scrollbar for terminal */
-.terminal-scroll::-webkit-scrollbar {
+.xterm-viewport::-webkit-scrollbar {
   display: none;
 }
 
-.terminal-scroll {
+.xterm-viewport {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }

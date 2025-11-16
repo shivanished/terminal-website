@@ -1,6 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
+
+const TerminalComponent = dynamic(() => import('./components/Terminal'), {
+  ssr: false,
+});
 
 interface CommandOutput {
   type: 'command' | 'output' | 'error';
@@ -27,15 +32,12 @@ interface Links {
 }
 
 export default function Home() {
-  const [commandHistory, setCommandHistory] = useState<CommandOutput[]>([]);
-  const [currentInput, setCurrentInput] = useState('');
   const [aboutData, setAboutData] = useState<string>('');
   const [experienceData, setExperienceData] = useState<Experience[]>([]);
   const [projectsData, setProjectsData] = useState<Project[]>([]);
   const [linksData, setLinksData] = useState<Links>({ x: '', linkedin: '', github: '' });
   const [dataLoaded, setDataLoaded] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const terminalRef = useRef<HTMLDivElement>(null);
+  const terminalInstanceRef = useRef<any>(null);
 
   const asciiArt = [
 "                                                                                      ",
@@ -96,291 +98,179 @@ export default function Home() {
     loadData();
   }, []);
 
-  useEffect(() => {
-    // Focus input on mount
-    inputRef.current?.focus();
-  }, []);
-
-  useEffect(() => {
-    // Focus input when window gains focus
-    const handleFocus = () => {
-      inputRef.current?.focus();
-    };
-
-    window.addEventListener('focus', handleFocus);
-
-    return () => {
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Scroll to bottom when new output is added
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
-  }, [commandHistory]);
-
   const parseCommand = (input: string): string[] => {
     // Split by spaces and non-alphanumeric characters, get first element
     const match = input.match(/^([a-zA-Z0-9-]+)/);
     return match ? [match[1], input.substring(match[1].length).trim()] : [input.trim(), ''];
   };
 
-  const executeCommand = (input: string) => {
+  // ANSI color codes
+  const colors = {
+    reset: '\x1b[0m',
+    green: '\x1b[32m',
+    cyan: '\x1b[36m',
+    yellow: '\x1b[33m',
+    magenta: '\x1b[35m',
+    white: '\x1b[37m',
+    gray: '\x1b[90m',
+    red: '\x1b[31m',
+    brightGreen: '\x1b[92m',
+  };
+
+  const executeCommand = (input: string): CommandOutput[] => {
     const trimmedInput = input.trim();
-    if (!trimmedInput) return;
+    if (!trimmedInput) return [];
 
     const [command, args] = parseCommand(trimmedInput);
+    const outputs: CommandOutput[] = [];
 
-    // Handle clear command separately - don't add to history
+    // Handle clear command - return special flag (handled in Terminal component)
     if (command === 'clear') {
-      setCommandHistory([]);
-      setCurrentInput('');
-      return;
+      return [{ type: 'output', content: '__CLEAR__' }];
     }
-
-    // Add command to history
-    setCommandHistory(prev => [...prev, { type: 'command', content: trimmedInput }]);
-
-    let output: string | React.ReactNode = '';
 
     switch (command) {
       case 'shiv':
         if (args === '--help' || args === '-h') {
-          output = (
-            <div className="space-y-1 text-gray-300">
-              <div className="text-white font-semibold">Available commands:</div>
-              <div className="ml-4 space-y-1">
-                <div><span className="text-[#00ff00]">shiv --help</span>     <span className="text-gray-400">-</span> Show this help message</div>
-                <div><span className="text-[#00ff00]">shiv name</span>       <span className="text-gray-400">-</span> Display ASCII art of my name</div>
-                <div><span className="text-[#00ff00]">shiv about</span>      <span className="text-gray-400">-</span> Display information about me</div>
-                <div><span className="text-[#00ff00]">shiv experience</span> <span className="text-gray-400">-</span> Show my work experience (use <span className="text-[#00ff00]">--verbose</span> for all)</div>
-                <div><span className="text-[#00ff00]">shiv projects</span>   <span className="text-gray-400">-</span> List my projects (use <span className="text-[#00ff00]">--verbose</span> for all)</div>
-                <div><span className="text-[#00ff00]">shiv contact</span>    <span className="text-gray-400">-</span> List contact options</div>
-              </div>
-            </div>
-          );
+          outputs.push({
+            type: 'output',
+            content: `${colors.white}Available commands:${colors.reset}\n` +
+              `  ${colors.brightGreen}shiv --help${colors.reset}     ${colors.gray}-${colors.reset} Show this help message\n` +
+              `  ${colors.brightGreen}shiv name${colors.reset}       ${colors.gray}-${colors.reset} Display ASCII art of my name\n` +
+              `  ${colors.brightGreen}shiv about${colors.reset}      ${colors.gray}-${colors.reset} Display information about me\n` +
+              `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
+              `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
+              `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options`
+          });
         } else if (args === 'name') {
-          output = (
-            <div className="text-[#00ff00] font-mono whitespace-pre leading-tight">
-              {asciiArt}
-            </div>
-          );
+          outputs.push({
+            type: 'output',
+            content: `${colors.brightGreen}${asciiArt}${colors.reset}`
+          });
         } else if (args === 'about') {
           if (!dataLoaded) {
-            output = 'Loading...';
+            outputs.push({ type: 'output', content: 'Loading...' });
           } else {
-            output = <div className="text-gray-300">{aboutData}</div>;
+            outputs.push({ type: 'output', content: aboutData });
           }
         } else if (args === 'experience' || args.startsWith('experience ')) {
           if (!dataLoaded) {
-            output = 'Loading...';
+            outputs.push({ type: 'output', content: 'Loading...' });
           } else {
             const isVerbose = args.includes('--verbose') || args.includes('-v');
             const displayExperiences = isVerbose ? experienceData : experienceData.slice(0, 4);
             const hasMore = experienceData.length > 4 && !isVerbose;
             
-            output = (
-              <div className="space-y-4 text-gray-300">
-                {displayExperiences.map((exp, idx) => (
-                <div key={idx} className="ml-2">
-                  <div className="font-semibold text-[#5dade2]">{exp.title} - {exp.company}</div>
-                  <div className="text-gray-500 text-sm">{exp.period}</div>
-                  {Array.isArray(exp.description) ? (
-                    <div className="ml-4 mt-1 space-y-1">
-                      {exp.description.map((desc, descIdx) => (
-                        <div key={descIdx}>• {desc}</div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="ml-4 mt-1">• {exp.description}</div>
-                  )}
-                </div>
-              ))}
-              {hasMore && (
-                <div className="ml-2 mt-4 text-gray-500 italic text-sm">
-                  Showing 4 of {experienceData.length} experiences. Use <span className="text-[#00ff00]">shiv experience --verbose</span> to see all.
-                </div>
-              )}
-              </div>
-            );
+            let content = '';
+            displayExperiences.forEach((exp) => {
+              content += `  ${colors.cyan}${exp.title} - ${exp.company}${colors.reset}\n`;
+              content += `  ${colors.gray}${exp.period}${colors.reset}\n`;
+              if (Array.isArray(exp.description)) {
+                exp.description.forEach((desc) => {
+                  content += `    • ${desc}\n`;
+                });
+              } else {
+                content += `    • ${exp.description}\n`;
+              }
+              content += '\n';
+            });
+            
+            if (hasMore) {
+              content += `  ${colors.gray}Showing 4 of ${experienceData.length} experiences. Use ${colors.brightGreen}shiv experience --verbose${colors.reset}${colors.gray} to see all.${colors.reset}`;
+            }
+            
+            outputs.push({ type: 'output', content: content.trim() });
           }
         } else if (args === 'projects' || args.startsWith('projects ')) {
           if (!dataLoaded) {
-            output = 'Loading...';
+            outputs.push({ type: 'output', content: 'Loading...' });
           } else {
             const isVerbose = args.includes('--verbose') || args.includes('-v');
             const displayProjects = isVerbose ? projectsData : projectsData.slice(0, 4);
             const hasMore = projectsData.length > 4 && !isVerbose;
             
-            output = (
-              <div className="space-y-4 text-gray-300">
-                {displayProjects.map((project, idx) => (
-                <div key={idx} className="ml-2">
-                  <div className="font-semibold text-[#bb8fce]">{project.name}</div>
-                  <div className="ml-4 mt-1">• {project.description}</div>
-                  <div className="ml-4 text-sm text-gray-500">Tech: {project.tech.join(', ')}</div>
-                </div>
-              ))}
-              {hasMore && (
-                <div className="ml-2 mt-4 text-gray-500 italic text-sm">
-                  Showing 4 of {projectsData.length} projects. Use <span className="text-[#00ff00]">shiv projects --verbose</span> to see all.
-                </div>
-              )}
-              </div>
-            );
+            let content = '';
+            displayProjects.forEach((project) => {
+              content += `  ${colors.magenta}${project.name}${colors.reset}\n`;
+              content += `    • ${project.description}\n`;
+              content += `    ${colors.gray}Tech: ${project.tech.join(', ')}${colors.reset}\n\n`;
+            });
+            
+            if (hasMore) {
+              content += `  ${colors.gray}Showing 4 of ${projectsData.length} projects. Use ${colors.brightGreen}shiv projects --verbose${colors.reset}${colors.gray} to see all.${colors.reset}`;
+            }
+            
+            outputs.push({ type: 'output', content: content.trim() });
           }
         } else if (args === 'contact') {
-          output = (
-            <div className="space-y-2 text-gray-300">
-              <div className="text-gray-400 italic text-sm mb-2">
-                To contact me, type "shiv contact" followed by one of the options below. 
-                For example: "shiv contact --email" or "shiv contact -e" (both work the same way).
-              </div>
-              <div className="text-white font-semibold">Contact options:</div>
-              <div className="ml-4 space-y-1">
-                <div><span className="text-[#00ff00]">--email</span> <span className="text-gray-400">or</span> <span className="text-[#00ff00]">-e</span> <span className="text-gray-400">-</span> Open email client</div>
-                <div><span className="text-[#00ff00]">--message</span> <span className="text-gray-400">or</span> <span className="text-[#00ff00]">-m</span> <span className="text-gray-400">-</span> Open messages app</div>
-                <div><span className="text-[#00ff00]">-x</span> <span className="text-gray-400">-</span> Open X (Twitter) profile</div>
-                <div><span className="text-[#00ff00]">--linkedin</span> <span className="text-gray-400">or</span> <span className="text-[#00ff00]">-l</span> <span className="text-gray-400">-</span> Open LinkedIn profile</div>
-                <div><span className="text-[#00ff00]">--github</span> <span className="text-gray-400">or</span> <span className="text-[#00ff00]">-g</span> <span className="text-gray-400">-</span> Open GitHub profile</div>
-              </div>
-            </div>
-          );
+          outputs.push({
+            type: 'output',
+            content: `${colors.gray}To contact me, type "shiv contact" followed by one of the options below.\n` +
+              `For example: "shiv contact --email" or "shiv contact -e" (both work the same way).${colors.reset}\n\n` +
+              `${colors.white}Contact options:${colors.reset}\n` +
+              `  ${colors.brightGreen}--email${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-e${colors.reset}     ${colors.gray}-${colors.reset} Open email client\n` +
+              `  ${colors.brightGreen}--message${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-m${colors.reset}  ${colors.gray}-${colors.reset} Open messages app\n` +
+              `  ${colors.brightGreen}-x${colors.reset}                  ${colors.gray}-${colors.reset} Open X (Twitter) profile\n` +
+              `  ${colors.brightGreen}--linkedin${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-l${colors.reset} ${colors.gray}-${colors.reset} Open LinkedIn profile\n` +
+              `  ${colors.brightGreen}--github${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-g${colors.reset}    ${colors.gray}-${colors.reset} Open GitHub profile`
+          });
         } else if (args.startsWith('contact ')) {
           const contactArg = args.substring(8).trim(); // Remove "contact " prefix
           if (contactArg === '--email' || contactArg === '-e') {
             window.location.href = 'mailto:shivanshsoni@berkeley.edu';
-            output = 'Opening email client...';
+            outputs.push({ type: 'output', content: 'Opening email client...' });
           } else if (contactArg === '--message' || contactArg === '-m') {
             window.location.href = 'sms:+19516422354';
-            output = 'Opening messages app...';
+            outputs.push({ type: 'output', content: 'Opening messages app...' });
           } else if (contactArg === '-x') {
             if (linksData.x) {
               window.open(linksData.x, '_blank');
-              output = 'Opening X profile...';
+              outputs.push({ type: 'output', content: 'Opening X profile...' });
             } else {
-              output = 'X link not configured yet.';
+              outputs.push({ type: 'output', content: 'X link not configured yet.' });
             }
           } else if (contactArg === '--linkedin' || contactArg === '-l') {
             if (linksData.linkedin) {
               window.open(linksData.linkedin, '_blank');
-              output = 'Opening LinkedIn profile...';
+              outputs.push({ type: 'output', content: 'Opening LinkedIn profile...' });
             } else {
-              output = 'LinkedIn link not configured yet.';
+              outputs.push({ type: 'output', content: 'LinkedIn link not configured yet.' });
             }
           } else if (contactArg === '--github' || contactArg === '-g') {
             if (linksData.github) {
               window.open(linksData.github, '_blank');
-              output = 'Opening GitHub profile...';
+              outputs.push({ type: 'output', content: 'Opening GitHub profile...' });
             } else {
-              output = 'GitHub link not configured yet.';
+              outputs.push({ type: 'output', content: 'GitHub link not configured yet.' });
             }
           } else {
-            output = `Invalid contact option: ${contactArg}. Use "shiv contact" to see available options.`;
+            outputs.push({ 
+              type: 'error', 
+              content: `Invalid contact option: ${contactArg}. Use "shiv contact" to see available options.` 
+            });
           }
         } else if (!args) {
-          output = 'Type "shiv --help" to see available commands.';
+          outputs.push({ type: 'output', content: 'Type "shiv --help" to see available commands.' });
         } else {
           const firstArg = args.split(/[\s\W]+/)[0] || args;
-          output = `zsh: command not found: ${firstArg}`;
+          outputs.push({ type: 'error', content: `zsh: command not found: ${firstArg}` });
         }
         break;
       default:
-        // Extract first word for error message (split by spaces and non-alphanumeric characters)
+        // Extract first word for error message
         const firstWord = trimmedInput.split(/[\s\W]+/)[0] || trimmedInput;
-        output = `zsh: command not found: ${firstWord}`;
+        outputs.push({ type: 'error', content: `zsh: command not found: ${firstWord}` });
     }
 
-    setCommandHistory(prev => [...prev, { 
-      type: output.toString().includes('command not found') ? 'error' : 'output', 
-      content: output 
-    }]);
-    setCurrentInput('');
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      executeCommand(currentInput);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      // Navigate command history (simplified - could be enhanced)
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-    }
-  };
-
-  const getPrompt = () => {
-    return (
-      <span>
-        <span className="text-[#00ff00]">shivansh</span>
-        <span className="text-gray-400">@</span>
-        <span className="text-[#5dade2]">terminal</span>
-        <span className="text-gray-400">:</span>
-        <span className="text-[#f7dc6f]">~</span>
-        <span className="text-[#00ff00]">$</span>
-      </span>
-    );
-  };
-
-  const handleContainerClick = () => {
-    // Focus input when clicking on the container
-    inputRef.current?.focus();
+    return outputs;
   };
 
   return (
-    <div 
-      className="h-screen w-screen overflow-hidden bg-black text-[#00ff00] font-mono p-6 text-sm cursor-text"
-      onClick={handleContainerClick}
-    >
-      <div 
-        ref={terminalRef}
-        className="max-w-4xl h-full overflow-y-auto terminal-scroll"
-      >
-        <div className="space-y-2 mb-4">
-          {commandHistory.length === 0 && (
-            <div className="mb-4">
-              <div className="text-gray-400 mb-4">
-                Welcome to Shiv's terminal. Type "shiv --help" to get started.
-              </div>
-            </div>
-          )}
-          {commandHistory.map((item, idx) => (
-            <div key={idx} className="break-words leading-relaxed">
-              {item.type === 'command' ? (
-                <div className="mb-1">
-                  {getPrompt()} <span className="text-white">{item.content}</span>
-                </div>
-              ) : (
-                <div className={`mb-2 ${item.type === 'error' ? 'text-red-400' : 'text-gray-300'}`}>
-                  {item.content}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="flex items-start">
-          <span className="mr-2 flex-shrink-0">{getPrompt()}</span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onBlur={(e) => {
-              // Immediately refocus when input loses focus
-              setTimeout(() => {
-                e.target.focus();
-              }, 0);
-            }}
-            className="flex-1 bg-transparent outline-none text-white caret-[#00ff00] min-w-0 terminal-cursor"
-            style={{ caretShape: 'block' }}
-            autoFocus
-            spellCheck={false}
-          />
-        </div>
-      </div>
+    <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
+      <TerminalComponent
+        onCommandExecute={executeCommand}
+        welcomeMessage={'Welcome to Shiv\'s terminal. Type "shiv --help" to get started.'}
+      />
     </div>
   );
 }
