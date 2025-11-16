@@ -302,9 +302,11 @@ export default function Home() {
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
-      <TerminalComponent
-        onCommandExecute={executeCommand}
-      />
+      <div className="w-full max-w-[900px] h-full">
+        <TerminalComponent
+          onCommandExecute={executeCommand}
+        />
+      </div>
     </div>
   );
 }
