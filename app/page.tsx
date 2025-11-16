@@ -135,8 +135,8 @@ export default function Home() {
           outputs.push({
             type: 'output',
             content: `${colors.white}Available commands:${colors.reset}\n` +
+              `  ${colors.brightGreen}shiv${colors.reset}            ${colors.gray}-${colors.reset} Display ASCII art of my name\n` +
               `  ${colors.brightGreen}shiv --help${colors.reset}     ${colors.gray}-${colors.reset} Show this help message\n` +
-              `  ${colors.brightGreen}shiv${colors.reset}             ${colors.gray}-${colors.reset} Display ASCII art of my name\n` +
               `  ${colors.brightGreen}shiv about${colors.reset}      ${colors.gray}-${colors.reset} Display information about me\n` +
               `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
               `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +

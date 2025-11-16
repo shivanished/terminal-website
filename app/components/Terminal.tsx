@@ -28,6 +28,7 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
     const container = terminalRef.current;
     let checkDimensionsInterval: NodeJS.Timeout | null = null;
     let resizeHandler: (() => void) | null = null;
+    let resizeObserver: ResizeObserver | null = null;
 
     const initializeTerminal = () => {
       if (terminalInstanceRef.current) return;
@@ -45,6 +46,7 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
         fontFamily: 'var(--font-geist-mono), "Courier New", monospace',
         fontSize: 14,
         lineHeight: 1.2,
+        scrollback: 1000, // Allow scrollback
       });
 
       const fitAddon = new FitAddon();
@@ -70,7 +72,17 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
           const core = (term as any)._core;
           if (!core || !core._renderService) return;
           
+          // Fit the terminal to its container
           fitAddon.fit();
+          
+          // Ensure viewport doesn't extend beyond container
+          const viewport = container.querySelector('.xterm-viewport') as HTMLElement;
+          if (viewport) {
+            const containerHeight = container.offsetHeight;
+            if (viewport.scrollHeight > containerHeight) {
+              viewport.style.maxHeight = `${containerHeight}px`;
+            }
+          }
         } catch (error) {
           // Silently ignore - terminal might not be ready yet
           console.debug('Terminal not ready for fit:', error);
@@ -84,6 +96,8 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
           fitTerminal();
           // Retry after another small delay if needed
           setTimeout(fitTerminal, 100);
+          // One more retry to ensure it's properly fitted
+          setTimeout(fitTerminal, 300);
         }, 100);
       });
 
@@ -110,6 +124,9 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
             setTimeout(() => {
               (term as any).isTypewriterActive = false;
               setIsTypewriterActive(false); // Update React state to re-enable interaction
+              // Scroll to bottom and focus the terminal so cursor appears and user can type immediately
+              scrollToBottom(term);
+              term.focus();
             }, 100); // Small delay to ensure Enter is processed
           }, 500); // 500ms delay before pressing Enter
         }
@@ -129,12 +146,28 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
         try {
           if (fitAddonRef.current && container && container.offsetWidth > 0 && container.offsetHeight > 0) {
             fitAddonRef.current.fit();
+            // Ensure viewport is constrained after resize
+            const viewport = container.querySelector('.xterm-viewport') as HTMLElement;
+            if (viewport) {
+              const containerHeight = container.offsetHeight;
+              viewport.style.maxHeight = `${containerHeight}px`;
+              // Scroll to bottom after resize
+              scrollToBottom(term);
+            }
           }
         } catch (error) {
           console.warn('Failed to fit terminal on resize:', error);
         }
       };
       window.addEventListener('resize', resizeHandler);
+      
+      // Use ResizeObserver to watch for container size changes
+      if (typeof ResizeObserver !== 'undefined') {
+        resizeObserver = new ResizeObserver(() => {
+          fitTerminal();
+        });
+        resizeObserver.observe(container);
+      }
     };
 
     // Ensure container has dimensions before initializing
@@ -169,6 +202,9 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
       }
       if (resizeHandler) {
         window.removeEventListener('resize', resizeHandler);
+      }
+      if (resizeObserver) {
+        resizeObserver.disconnect();
       }
       if (terminalInstanceRef.current) {
         terminalInstanceRef.current.dispose();
@@ -253,7 +289,9 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
       ref={terminalRef} 
       className="h-full w-full"
       style={{ 
-        minHeight: '100vh',
+        height: '100%',
+        width: '100%',
+        overflow: 'hidden',
         pointerEvents: isTypewriterActive ? 'none' : 'auto',
         userSelect: isTypewriterActive ? 'none' : 'auto',
       }}
@@ -416,6 +454,62 @@ function stripAnsiCodes(str: string): string {
   return str.replace(/\x1b\[[0-9;]*m/g, '');
 }
 
+// Helper function to scroll terminal to bottom
+function scrollToBottom(term: Terminal) {
+  // Use multiple strategies and timing to ensure we scroll to bottom
+  // Strategy 1: Immediate scroll via API
+  try {
+    term.scrollToBottom();
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  // Strategy 2: Direct viewport manipulation (synchronous)
+  try {
+    const element = (term as any).element;
+    if (element) {
+      const viewport = element.querySelector('.xterm-viewport') as HTMLElement;
+      if (viewport) {
+        viewport.scrollTop = viewport.scrollHeight;
+      }
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+  
+  // Strategy 3: Delayed scroll to catch any async rendering
+  setTimeout(() => {
+    try {
+      term.scrollToBottom();
+      const element = (term as any).element;
+      if (element) {
+        const viewport = element.querySelector('.xterm-viewport') as HTMLElement;
+        if (viewport) {
+          viewport.scrollTop = viewport.scrollHeight;
+        }
+      }
+    } catch (e) {
+      // Ignore errors
+    }
+  }, 0);
+  
+  // Strategy 4: After animation frame (for DOM updates)
+  requestAnimationFrame(() => {
+    try {
+      term.scrollToBottom();
+      const element = (term as any).element;
+      if (element) {
+        const viewport = element.querySelector('.xterm-viewport') as HTMLElement;
+        if (viewport) {
+          viewport.scrollTop = viewport.scrollHeight;
+        }
+      }
+    } catch (e) {
+      // Ignore errors
+    }
+  });
+}
+
 // Extend terminal with custom methods
 function extendTerminal(term: Terminal) {
   // Store current input line
@@ -504,6 +598,8 @@ function extendTerminal(term: Terminal) {
   (term as any).prompt = () => {
     term.write((term as any).getPrompt());
     (term as any).cursorPosition = 0; // Reset cursor position after showing prompt
+    // Ensure we're scrolled to bottom after showing prompt
+    scrollToBottom(term);
   };
 }
 
@@ -622,6 +718,9 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
         if (outputs.length > 0) {
           term.write('\r\n');
         }
+        
+        // Scroll to bottom after writing all output (only once per command)
+        scrollToBottom(term);
       }
       
       // Reset and show new prompt
