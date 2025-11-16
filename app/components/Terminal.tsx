@@ -552,6 +552,8 @@ function extendTerminal(term: Terminal) {
   (term as any).isTypewriterActive = false;
   // Flag to indicate programmatic data trigger (allows bypassing typewriter lock)
   (term as any).isProgrammaticInput = false;
+  // Flag to prevent double-processing of modifier+backspace combinations
+  (term as any).isHandlingModifierBackspace = false;
 
   // Get prompt text (with ANSI colors)
   (term as any).getPrompt = () => {
@@ -758,6 +760,11 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
 
     // Handle Backspace
     if (data === '\x7f' || data === '\b') {
+      // Skip if we're handling a modifier+backspace combination (prevent double-processing)
+      // Don't clear the flag here - let the timeout in the key handler clear it
+      if ((term as any).isHandlingModifierBackspace) {
+        return;
+      }
       if (pos > 0) {
         const newLine = currentLine.slice(0, pos - 1) + currentLine.slice(pos);
         // After backspace, cursor should be at pos - 1
@@ -876,6 +883,45 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
       (term as any).setCurrentLine(newLine, pos + 1);
     }
   };
+
+  // Helper function to clear entire line (for Command+Backspace / Ctrl+Backspace)
+  const clearEntireLine = () => {
+    if ((term as any).isTypewriterActive && !(term as any).isProgrammaticInput) {
+      return;
+    }
+    
+    (term as any).setCurrentLine('', 0);
+  };
+  
+  // Register custom key handler for modifier key combinations
+  term.attachCustomKeyEventHandler((event: KeyboardEvent) => {
+    // Ignore during typewriter effect
+    if ((term as any).isTypewriterActive && !(term as any).isProgrammaticInput) {
+      return true; // Allow default behavior
+    }
+
+    // Only handle Backspace with modifiers
+    if (event.key !== 'Backspace') {
+      return true; // Allow other keys to be processed normally
+    }
+
+    // Command+Backspace (Mac) or Ctrl+Backspace (Windows/Linux) - Clear entire line
+    if ((event.metaKey || event.ctrlKey) && !event.altKey) {
+      // Set flag BEFORE handling to prevent data handler from processing
+      (term as any).isHandlingModifierBackspace = true;
+      clearEntireLine();
+      event.preventDefault();
+      event.stopPropagation();
+      // Clear flag after a short delay
+      setTimeout(() => {
+        (term as any).isHandlingModifierBackspace = false;
+      }, 10);
+      return false; // Prevent default behavior
+    }
+
+    // Allow regular backspace to be processed normally
+    return true;
+  });
   
   // Register the handler
   term.onData(dataHandler);

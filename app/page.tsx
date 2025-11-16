@@ -159,12 +159,12 @@ export default function Home() {
 
     switch (command) {
       case 'shiv':
-        if (args === '--help' || args === '-h') {
+        if (args === 'help' || args === '--help' || args === '-h') {
           outputs.push({
             type: 'output',
             content: `${colors.white}Available commands:${colors.reset}\n` +
               `  ${colors.brightGreen}shiv${colors.reset}            ${colors.gray}-${colors.reset} Display ASCII art of my name\n` +
-              `  ${colors.brightGreen}shiv --help${colors.reset}     ${colors.gray}-${colors.reset} Show this help message\n` +
+              `  ${colors.brightGreen}shiv help${colors.reset}       ${colors.gray}-${colors.reset} Show this help message\n` +
               `  ${colors.brightGreen}shiv about${colors.reset}      ${colors.gray}-${colors.reset} Display information about me\n` +
               `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
               `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
@@ -181,7 +181,7 @@ export default function Home() {
           }
           outputs.push({
             type: 'output',
-            content: `${displayContent}\n\nWelcome to Shiv's terminal. Type "shiv --help" to get started.`
+            content: `${displayContent}\n\nWelcome to Shiv's terminal. Type "shiv help" to get started.`
           });
         } else if (args === 'about') {
           if (!dataLoaded) {
@@ -301,7 +301,7 @@ export default function Home() {
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
-      <div className="w-full max-w-[900px] mx-auto h-full">
+      <div className="w-full max-w-[900px] h-full">
         <TerminalComponent
           onCommandExecute={executeCommand}
         />
