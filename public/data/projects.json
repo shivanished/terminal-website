@@ -1,6 +1,6 @@
 [
   {
-    "name": "Fashion:Week",
+    "name": "  Fashion:Week",
     "description": "Scroll-based Archive Fashion Platform - Merged w/ Lowheads (10M+ ARR). React Native + Expo mobile frontends, Supabase relational/vector databases, Powersync data synchronization. Trained collaborative-filtering based recommender system using Pytorch -- powered by on-demand Modal clusters; Semantic search infra: 1M+ CLIP embedding vectors + cosine similarity querying + hybrid BM25-α reranking.",
     "tech": ["React Native", "Expo", "Supabase", "Pytorch", "Modal", "CLIP", "Vector Search", "Recommender Systems"]
   },
