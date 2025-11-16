@@ -245,13 +245,13 @@ export default function Home() {
         } else if (args === 'contact') {
           outputs.push({
             type: 'output',
-            content: `${colors.gray}To contact me, type "shiv contact" followed by one of the options below.\n` +
+            content: `${colors.cyan}To contact me, type "shiv contact" followed by one of the options below.\n` +
               `For example: "shiv contact --email" or "shiv contact -e" (both work the same way).${colors.reset}\n\n` +
               `${colors.white}Contact options:${colors.reset}\n` +
               `  ${colors.brightGreen}--email${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-e${colors.reset}     ${colors.gray}-${colors.reset} Open email client\n` +
-              `  ${colors.brightGreen}--message${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-m${colors.reset}  ${colors.gray}-${colors.reset} Open messages app\n` +
-              `  ${colors.brightGreen}-x${colors.reset}                  ${colors.gray}-${colors.reset} Open X (Twitter) profile\n` +
-              `  ${colors.brightGreen}--linkedin${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-l${colors.reset} ${colors.gray}-${colors.reset} Open LinkedIn profile\n` +
+              `  ${colors.brightGreen}--message${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-m${colors.reset}   ${colors.gray}-${colors.reset} Open messages app\n` +
+              `  ${colors.brightGreen}-x${colors.reset}                ${colors.gray}-${colors.reset} Open X (Twitter) profile\n` +
+              `  ${colors.brightGreen}--linkedin${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-l${colors.reset}  ${colors.gray}-${colors.reset} Open LinkedIn profile\n` +
               `  ${colors.brightGreen}--github${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-g${colors.reset}    ${colors.gray}-${colors.reset} Open GitHub profile`
           });
         } else if (args.startsWith('contact ')) {

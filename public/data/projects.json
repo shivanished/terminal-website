@@ -77,7 +77,7 @@
       "2write.app implements AI to support users in writing essays by generating prompts/outlines, completing sentences, and suggesting ideas. This creates an experience that facilitates higher quality writing that's undetectable as AI"
     ],
     "tech": ["Web App", "AI", "Writing Software"],
-    "link": ""
+    "link": "https://2write.app"
   },
   {
     "name": "FoodShelf",
@@ -87,7 +87,7 @@
       "Determines how long foods can be stored or composted based on classification results"
     ],
     "tech": ["iOS", "SwiftUI", "CoreML", "Machine Learning"],
-    "link": ""
+    "link": "https://github.com/shivanished/foodShelf"
   },
   {
     "name": "Disease Diagnosing Statistical Classification Algorithm",
@@ -97,6 +97,6 @@
       "Prioritized diseases prevalent in less-developed countries (i.e. Malaria, Tuberculosis, etc.) to offer a solution for individuals in medically underserved areas"
     ],
     "tech": ["Python", "Statistical Classification", "Machine Learning", "Healthcare"],
-    "link": ""
+    "link": "https://drive.google.com/drive/folders/17SII6UvjNvORFVAUjOOhC5aQz8ySZZL2"
   }
 ]
