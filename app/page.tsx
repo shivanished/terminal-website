@@ -21,8 +21,10 @@ interface Experience {
 
 interface Project {
   name: string;
-  description: string;
+  tagline: string;
+  description: string[];
   tech: string[];
+  link?: string;
 }
 
 interface Links {
@@ -222,8 +224,15 @@ export default function Home() {
             
             let content = '';
             displayProjects.forEach((project) => {
-              content += `  ${colors.magenta}${project.name}${colors.reset}\n`;
-              content += `    • ${project.description}\n`;
+              let titleWithLink = `${colors.magenta}${project.name}${colors.reset}`;
+              if (project.link && project.link.trim()) {
+                titleWithLink = `${colors.magenta}${project.name}${colors.reset} ${colors.yellow}- ${project.link}${colors.reset}`;
+              }
+              content += `  ${titleWithLink}\n`;
+              content += `    ${colors.cyan}${project.tagline}${colors.reset}\n`;
+              project.description.forEach((desc) => {
+                content += `    • ${desc}\n`;
+              });
               content += `    ${colors.gray}Tech: ${project.tech.join(', ')}${colors.reset}\n\n`;
             });
             

@@ -1,57 +1,102 @@
 [
   {
     "name": "  Fashion:Week",
-    "description": "Scroll-based Archive Fashion Platform - Merged w/ Lowheads (10M+ ARR). React Native + Expo mobile frontends, Supabase relational/vector databases, Powersync data synchronization. Trained collaborative-filtering based recommender system using Pytorch -- powered by on-demand Modal clusters; Semantic search infra: 1M+ CLIP embedding vectors + cosine similarity querying + hybrid BM25-α reranking.",
-    "tech": ["React Native", "Expo", "Supabase", "Pytorch", "Modal", "CLIP", "Vector Search", "Recommender Systems"]
+    "tagline": "Scroll-based Archive Fashion Platform - Merged w/ Lowheads (10M+ ARR)",
+    "description": [
+      "React Native + Expo mobile frontends, Supabase relational/vector databases, Powersync data synchronization",
+      "Trained collaborative-filtering based recommender system using Pytorch -- powered by on-demand Modal clusters; Semantic search infra: 1M+ CLIP embedding vectors + cosine similarity querying + hybrid BM25-α reranking"
+    ],
+    "tech": ["React Native", "Expo", "Supabase", "Pytorch", "Modal", "CLIP", "Vector Search", "Recommender Systems"],
+    "link": "https://www.fashionweek.wiki/waitlist"
   },
   {
     "name": "FormPix",
-    "description": "On-Device-Inference-Powered USCIS Form Filler Chrome Extension. Used Tesseract OCR + Liquid AI LFM2-350M to extract data from files and automate USCIS online form filling. Conducted interviews with legal/immigration firms to diagnose pain points -- Contracts with 3 law firms.",
-    "tech": ["Chrome Extension", "OCR", "Tesseract", "Liquid AI", "LFM2-350M", "Legal Tech"]
+    "tagline": "On-Device-Inference-Powered USCIS Form Filler Chrome Extension",
+    "description": [
+      "Used Tesseract OCR + Liquid AI LFM2-350M to extract data from files and automate USCIS online form filling",
+      "Conducted interviews with legal/immigration firms to diagnose pain points -- Contracts with 3 law firms"
+    ],
+    "tech": ["Chrome Extension", "OCR", "Tesseract", "Liquid AI", "LFM2-350M", "Legal Tech"],
+    "link": ""
   },
   {
-    "name": "Docker Contract - Berkeley Nutritional Meal Generator",
-    "description": "College Student Developer Relations Project - 250k+ Social Media Impacts. Built AI-powered MERN-stack web app + trained RNN models to create personalized meal plans for Berkeley students based on dining hall menu/dietary preference; Designed microservice architecture enabled by Docker. REST APIs for the backend (Node/Express) & AI models (TensorFlow/Flask) microservices; Hosted on GCP.",
-    "tech": ["MERN Stack", "Docker", "RNN", "Microservices", "AI", "Node.js", "Express", "TensorFlow", "Flask", "GCP"]
+    "name": "Docker Contract",
+    "tagline": "College Student Developer Relations Project - 250k+ Social Media Impacts",
+    "description": [
+      "Built AI-powered MERN-stack web app + trained RNN models to create personalized meal plans for Berkeley students based on dining hall menu/dietary preference; Designed microservice architecture enabled by Docker",
+      "REST APIs for the backend (Node/Express) & AI models (TensorFlow/Flask) microservices; Hosted on GCP"
+    ],
+    "tech": ["MERN Stack", "Docker", "RNN", "Microservices", "AI", "Node.js", "Express", "TensorFlow", "Flask", "GCP"],
+    "link": "https://drive.google.com/drive/folders/1FyUvUVRQCZwJNEQx1Gvk0HD6yatZ-Q3S?usp=drive_link"
   },
   {
     "name": "Posthuman",
-    "description": "\"Upload you consciousness to the blockchain.\" Posthuman ensures your digital legacy lives on with AI-powered estate management, secure asset delegation, and blockchain-backed will execution that seamlessly handles your affairs when you no longer can. Posthuman secure's your legacy with AI-powered features like Legally-Executable Will Generation, Asset Identification/Tracking, Agentic Subscriptions Cancelling, Posthumous Chat, AI-generated Media of Loved One, and Blockchain Integration for Trustability/Verifiability.",
-    "tech": ["AI", "Blockchain", "Estate Management", "Legal Tech", "Next.js"]
+    "tagline": "Blockchain-Enabled Digital Legacy and Estate Management Platform",
+    "description": [
+      "Built Next.js frontend and backend, Elasticsearch + Supabase databases, and EigenLayer blockchain verification",
+      "Mistral-7B + Elasticsearch for on-device 'posthumous chat'; LumaAI + ElevenLabs + custom-optimized MuseTalk VAE model for audiovisual 'memory' generation; cuda GPU-acceleration for inference"
+    ],
+    "tech": ["AI", "Blockchain", "Estate Management", "Legal Tech", "Next.js"],
+    "link": "https://devpost.com/software/posthuman"
   },
   {
     "name": "High-Frequency Tactile Transducer",
-    "description": "A device that translates audio signals (especially high-frequency audio) into tactile sensations for audibly impaired individuals, creating a more complete musical experience. The mission is to enable individuals to experience, not only the bass in music, but treble as well.",
-    "tech": ["Hardware", "Signal Processing", "Accessibility"]
+    "tagline": "Audio-to-Tactile Translation Device for Hearing-Impaired Music Experience",
+    "description": [
+      "A device that translates audio signals (especially high-frequency audio) into tactile sensations for audibly impaired individuals, creating a more complete musical experience",
+      "The mission is to enable individuals to experience, not only the bass in music, but treble as well"
+    ],
+    "tech": ["Hardware", "Signal Processing", "Accessibility"],
+    "link": "https://github.com/shivanished/audio-transducer"
   },
   {
     "name": "Survive! - The Game",
-    "description": "A Java game. Your plane crash landed. You're stuck on the island Fugaji. You're cold, alone, and hungry. Atleast there's fruit around. Eat them to survive!",
-    "tech": ["Java", "Game Development"]
+    "tagline": "Java-Based Survival Adventure Game",
+    "description": [
+      "A Java game where your plane crash landed and you're stuck on the island Fugaji",
+      "Survival mechanics: you're cold, alone, and hungry - eat fruit to survive!"
+    ],
+    "tech": ["Java", "Game Development"],
+    "link": "https://github.com/Berkeley-CS61B-Student/sp24-proj3-g607"
   },
   {
     "name": "S1XT33N - Voice Controlled Car",
-    "description": "A robot car built with breadboards, wires, and wheels that listens to voice commands then drives on that command's pre-determined path. Employed Digital-to-Analog and Analog-to-Digital Converters, motion sensors, band-pass filter circuits, System ID, Principal Compenent Analysis, and Singular Value Decomposition to build, test, and tune the car.",
-    "tech": ["Hardware", "Signal Processing", "Robotics", "Control Systems"]
-  },
-  {
-    "name": "Blue Origin - Blue Alchemist Financial Strategy",
-    "description": "Conducted market and industry research/company SWOT analysis to develop an innovative go-to-market strategy for the rapid commercialization of Blue Origin's in-situ solar panel-producing lunar module Blue Alchemist. Provided multiple opportunities - short-term/long-term solutions; Calculated projected financials (i.e. profit over time, depreciation, etc.) to assess viability and sustainability",
-    "tech": ["Market Research", "Financial Analysis", "Strategy"]
+    "tagline": "Voice-Command Autonomous Robot Car with Signal Processing",
+    "description": [
+      "A robot car built with breadboards, wires, and wheels that listens to voice commands then drives on that command's pre-determined path",
+      "Employed Digital-to-Analog and Analog-to-Digital Converters, motion sensors, band-pass filter circuits, System ID, Principal Component Analysis, and Singular Value Decomposition to build, test, and tune the car"
+    ],
+    "tech": ["Hardware", "Signal Processing", "Robotics", "Control Systems"],
+    "link": ""
   },
   {
     "name": "2write.app",
-    "description": "A web-app writing software that uses AI to supplement user-inputted text for essay writing. 2write.app implements AI to support users in writing essays by generating prompts/outlines, completing sentences, and suggesting ideas. This creates an experience that facilitates higher quality writing that's undetectable as AI.",
-    "tech": ["Web App", "AI", "Writing Software"]
+    "tagline": "AI-Powered Essay Writing Assistant Web Application",
+    "description": [
+      "A web-app writing software that uses AI to supplement user-inputted text for essay writing",
+      "2write.app implements AI to support users in writing essays by generating prompts/outlines, completing sentences, and suggesting ideas. This creates an experience that facilitates higher quality writing that's undetectable as AI"
+    ],
+    "tech": ["Web App", "AI", "Writing Software"],
+    "link": ""
   },
   {
     "name": "FoodShelf",
-    "description": "Designed and developed a native iOS app using SwiftUI and Apple's CoreML to classify leftover foods and determine how long they can be stored or composted.",
-    "tech": ["iOS", "SwiftUI", "CoreML", "Machine Learning"]
+    "tagline": "iOS Food Classification App with CoreML",
+    "description": [
+      "Designed and developed a native iOS app using SwiftUI and Apple's CoreML to classify leftover foods",
+      "Determines how long foods can be stored or composted based on classification results"
+    ],
+    "tech": ["iOS", "SwiftUI", "CoreML", "Machine Learning"],
+    "link": ""
   },
   {
     "name": "Disease Diagnosing Statistical Classification Algorithm",
-    "description": "Developed a Python program that uses statistical classification methods to determine what diseases a person might have based on their symptoms. I prioritized diseases prevalent in less-developed countries (i.e. Malaria, Tuberculosis, etc.) to offer a solution for individuals in medically underserved areas.",
-    "tech": ["Python", "Statistical Classification", "Machine Learning", "Healthcare"]
+    "tagline": "Statistical Classification System for Underserved Healthcare Diagnostics",
+    "description": [
+      "Developed a Python program that uses statistical classification methods to determine what diseases a person might have based on their symptoms",
+      "Prioritized diseases prevalent in less-developed countries (i.e. Malaria, Tuberculosis, etc.) to offer a solution for individuals in medically underserved areas"
+    ],
+    "tech": ["Python", "Statistical Classification", "Machine Learning", "Healthcare"],
+    "link": ""
   }
 ]
