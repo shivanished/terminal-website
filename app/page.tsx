@@ -37,6 +37,36 @@ export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
 
+  const asciiArt = [
+"                                                                                      ",
+"                                                                                      ",
+"  .--.--.     ,---,                                                         ,---,     ",
+" /  /    '. ,--.' |      ,--,                                             ,--.' |     ",
+"|  :  /`. / |  |  :    ,--.'|                             ,---,           |  |  :     ",
+";  |  |--`  :  :  :    |  |,      .---.               ,-+-. /  | .--.--.  :  :  :     ",
+"|  :  ;_    :  |  |,--.`--'_    /.  ./|   ,--.--.    ,--.'|'   |/  /    ' :  |  |,--. ",
+" \\  \\    `. |  :  '   |,' ,'| .-' . ' |  /       \\  |   |  ,\"' |  :  /`./ |  :  '   | ",
+"  `----.   \\|  |   /' :'  | |/___/ \\: | .--.  .-. | |   | /  | |  :  ;_   |  |   /' : ",
+"  __ \\  \\  |'  :  | | ||  | :.   \\  ' .  \\__\\/: . . |   | |  | |\\  \\    `.'  :  | | | ",
+" /  /`--'  /|  |  ' | :'  : |_\\   \\   '  ,\" .--.; | |   | |  |/  `----.   \\  |  ' | : ",
+"'--'.     / |  :  :_:,'|  | '.'\\   \\    /  /  ,.  | |   | |--'  /  /`--'  /  :  :_:,' ",
+"  `--'---'  |  | ,'    ;  :    ;\\   \\ |;  :   .'   \\|   |/     '--'.     /|  | ,'     ",
+"  .--.--.   `--''      |  ,   /  '---\" |  ,     .-./'---'        `--'---' `--''       ",
+" /  /    '.             ---`-'      ,--,`--`---'                                      ",
+"|  :  /`. /    ,---.        ,---, ,--.'|                                               ",
+";  |  |--`    '   ,'\\   ,-+-. /  ||  |,                                                ",
+"|  :  ;_     /   /   | ,--.'|'   |`--'_                                                ",
+" \\  \\    `. .   ; ,. :|   |  ,\"' |,' ,'|                                               ",
+"  `----.   \\'   | |: :|   | /  | |'  | |                                               ",
+"  __ \\  \\  |'   | .; :|   | |  | ||  | :                                               ",
+" /  /`--'  /|   :    ||   | |  |/ '  : |__                                             ",
+"'--'.     /  \\   \\  / |   | |--'  |  | '.'|                                            ",
+"  `--'---'    `----'  |   |/      ;  :    ;                                            ",
+"                      '---'       |  ,   /                                             ",
+"                                   ---`-'                                              ",
+"                                                                                      "
+].join("\n");
+
   useEffect(() => {
     // Load JSON data from public/data directory
     const loadData = async () => {
@@ -123,11 +153,18 @@ export default function Home() {
               <div className="text-white font-semibold">Available commands:</div>
               <div className="ml-4 space-y-1">
                 <div><span className="text-[#00ff00]">shiv --help</span>     <span className="text-gray-400">-</span> Show this help message</div>
+                <div><span className="text-[#00ff00]">shiv name</span>       <span className="text-gray-400">-</span> Display ASCII art of my name</div>
                 <div><span className="text-[#00ff00]">shiv about</span>      <span className="text-gray-400">-</span> Display information about me</div>
                 <div><span className="text-[#00ff00]">shiv experience</span> <span className="text-gray-400">-</span> Show my work experience (use <span className="text-[#00ff00]">--verbose</span> for all)</div>
                 <div><span className="text-[#00ff00]">shiv projects</span>   <span className="text-gray-400">-</span> List my projects (use <span className="text-[#00ff00]">--verbose</span> for all)</div>
                 <div><span className="text-[#00ff00]">shiv contact</span>    <span className="text-gray-400">-</span> List contact options</div>
               </div>
+            </div>
+          );
+        } else if (args === 'name') {
+          output = (
+            <div className="text-[#00ff00] font-mono whitespace-pre leading-tight">
+              {asciiArt}
             </div>
           );
         } else if (args === 'about') {
@@ -294,17 +331,19 @@ export default function Home() {
 
   return (
     <div 
-      className="h-screen w-screen overflow-hidden bg-[#1e1e1e] text-[#00ff00] font-mono p-6 text-sm cursor-text"
+      className="h-screen w-screen overflow-hidden bg-black text-[#00ff00] font-mono p-6 text-sm cursor-text"
       onClick={handleContainerClick}
     >
       <div 
         ref={terminalRef}
-        className="max-w-4xl mx-auto h-full overflow-y-auto terminal-scroll"
+        className="max-w-4xl h-full overflow-y-auto terminal-scroll"
       >
         <div className="space-y-2 mb-4">
           {commandHistory.length === 0 && (
-            <div className="text-gray-400 mb-4">
-              Welcome to Shiv's terminal. Type "shiv --help" to get started.
+            <div className="mb-4">
+              <div className="text-gray-400 mb-4">
+                Welcome to Shiv's terminal. Type "shiv --help" to get started.
+              </div>
             </div>
           )}
           {commandHistory.map((item, idx) => (
