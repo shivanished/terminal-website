@@ -136,16 +136,16 @@ export default function Home() {
             type: 'output',
             content: `${colors.white}Available commands:${colors.reset}\n` +
               `  ${colors.brightGreen}shiv --help${colors.reset}     ${colors.gray}-${colors.reset} Show this help message\n` +
-              `  ${colors.brightGreen}shiv name${colors.reset}       ${colors.gray}-${colors.reset} Display ASCII art of my name\n` +
+              `  ${colors.brightGreen}shiv${colors.reset}             ${colors.gray}-${colors.reset} Display ASCII art of my name\n` +
               `  ${colors.brightGreen}shiv about${colors.reset}      ${colors.gray}-${colors.reset} Display information about me\n` +
               `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
               `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
               `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options`
           });
-        } else if (args === 'name') {
+        } else if (!args) {
           outputs.push({
             type: 'output',
-            content: `${colors.brightGreen}${asciiArt}${colors.reset}`
+            content: `${colors.brightGreen}${asciiArt}${colors.reset}\n\nWelcome to Shiv's terminal. Type "shiv --help" to get started.`
           });
         } else if (args === 'about') {
           if (!dataLoaded) {
@@ -249,8 +249,6 @@ export default function Home() {
               content: `Invalid contact option: ${contactArg}. Use "shiv contact" to see available options.` 
             });
           }
-        } else if (!args) {
-          outputs.push({ type: 'output', content: 'Type "shiv --help" to see available commands.' });
         } else {
           const firstArg = args.split(/[\s\W]+/)[0] || args;
           outputs.push({ type: 'error', content: `zsh: command not found: ${firstArg}` });
@@ -269,7 +267,6 @@ export default function Home() {
     <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
       <TerminalComponent
         onCommandExecute={executeCommand}
-        welcomeMessage={'Welcome to Shiv\'s terminal. Type "shiv --help" to get started.'}
       />
     </div>
   );

@@ -13,10 +13,9 @@ interface CommandOutput {
 
 interface TerminalComponentProps {
   onCommandExecute: (command: string) => CommandOutput[];
-  welcomeMessage?: string;
 }
 
-export default function TerminalComponent({ onCommandExecute, welcomeMessage }: TerminalComponentProps) {
+export default function TerminalComponent({ onCommandExecute }: TerminalComponentProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
   const terminalInstanceRef = useRef<Terminal | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
@@ -87,16 +86,11 @@ export default function TerminalComponent({ onCommandExecute, welcomeMessage }: 
         }, 100);
       });
 
-      // Show welcome message
-      if (welcomeMessage) {
-        term.writeln(welcomeMessage);
-      }
-
       // Set up input handling
       setupInputHandling(term, onCommandExecute);
 
-      // Typewriter effect: type "shiv name" and press Enter
-      const typewriterText = 'shiv name';
+      // Typewriter effect: type "shiv" and press Enter
+      const typewriterText = 'shiv';
       let charIndex = 0;
       
       const typeNextChar = () => {
@@ -174,7 +168,7 @@ export default function TerminalComponent({ onCommandExecute, welcomeMessage }: 
       }
       fitAddonRef.current = null;
     };
-  }, [onCommandExecute, welcomeMessage]);
+  }, [onCommandExecute]);
 
   return (
     <div 
@@ -414,9 +408,25 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
 
     // Handle Enter key
     if (data === '\r') {
+      const trimmedInput = currentLine.trim();
+      
+      // Check if this is a clear command before writing newline
+      if (trimmedInput === 'clear') {
+        // Clear the screen and move to absolute top-left
+        // Use ANSI sequences to ensure proper clearing and positioning
+        term.write('\x1b[2J\x1b[H'); // Clear entire screen buffer and move cursor to top-left
+        // Reset and show new prompt at top
+        (term as any).currentLine = '';
+        (term as any).cursorPosition = 0;
+        (term as any).history.push(currentLine);
+        (term as any).historyCursor = -1;
+        (term as any).prompt();
+        return;
+      }
+      
       term.write('\r\n');
       
-      if (currentLine.trim()) {
+      if (trimmedInput) {
         // Add to history
         (term as any).history.push(currentLine);
         (term as any).historyCursor = -1;
@@ -424,19 +434,26 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
         // Execute command and display output
         const outputs = onCommandExecute(currentLine);
         
+        // Check for clear command (shouldn't happen if we handled it above, but just in case)
+        const hasClear = outputs.some(output => output.content === '__CLEAR__');
+        
+        if (hasClear) {
+          // Clear the screen and move to absolute top-left
+          // Use ANSI sequences to ensure proper clearing and positioning
+          term.write('\x1b[2J\x1b[H'); // Clear entire screen buffer and move cursor to top-left
+          // Reset and show new prompt at top
+          (term as any).currentLine = '';
+          (term as any).cursorPosition = 0;
+          (term as any).prompt();
+          return;
+        }
+        
         // Add a newline before the output for legibility
         if (outputs.length > 0) {
           term.write('\r\n');
         }
         
         outputs.forEach((output, outputIndex) => {
-          // Handle clear command
-          if (output.content === '__CLEAR__') {
-            term.clear();
-            // Move cursor to top-left after clearing
-            term.write('\x1b[H');
-            return;
-          }
           
           if (output.type === 'error') {
             const errorContent = typeof output.content === 'string' 
@@ -518,9 +535,8 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
 
     // Handle Ctrl+L (clear screen)
     if (data === '\x0c') {
-      term.clear();
-      // Move cursor to top-left after clearing
-      term.write('\x1b[H');
+      // Clear entire screen buffer and move cursor to top-left
+      term.write('\x1b[2J\x1b[H');
       (term as any).prompt();
       return;
     }
