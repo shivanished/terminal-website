@@ -266,7 +266,7 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
     // Block focus events on terminal
     const focusEvents = ['focus', 'focusin'];
     focusEvents.forEach(eventType => {
-      document.addEventListener(eventType, blockFocus, { capture: true, passive: false });
+      document.addEventListener(eventType, blockFocus as EventListener, { capture: true, passive: false });
     });
 
     return () => {
@@ -278,10 +278,36 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
         document.removeEventListener(eventType, blockKeyboardInteraction as EventListener, { capture: true });
       });
       focusEvents.forEach(eventType => {
-        document.removeEventListener(eventType, blockFocus, { capture: true });
+        document.removeEventListener(eventType, blockFocus as EventListener, { capture: true });
       });
     };
   }, [isTypewriterActive]);
+
+  // Auto-focus terminal when clicking outside of it (prevents accidental click-off)
+  useEffect(() => {
+    if (!isReady || !terminalInstanceRef.current) return;
+
+    const handleDocumentClick = (e: MouseEvent) => {
+      const target = e.target as Node;
+      const terminalElement = terminalRef.current;
+      
+      // If clicking outside the terminal, focus it
+      if (terminalElement && !terminalElement.contains(target)) {
+        // Small delay to ensure the click event has processed
+        setTimeout(() => {
+          if (terminalInstanceRef.current) {
+            terminalInstanceRef.current.focus();
+          }
+        }, 0);
+      }
+    };
+
+    document.addEventListener('click', handleDocumentClick, true);
+    
+    return () => {
+      document.removeEventListener('click', handleDocumentClick, true);
+    };
+  }, [isReady]);
 
   return (
     <div 

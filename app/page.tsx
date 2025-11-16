@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 const TerminalComponent = dynamic(() => import('./components/Terminal'), {
@@ -38,7 +38,6 @@ export default function Home() {
   const [linksData, setLinksData] = useState<Links>({ x: '', linkedin: '', github: '' });
   const [dataLoaded, setDataLoaded] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
-  const terminalInstanceRef = useRef<any>(null);
 
   const asciiArtLarge = [
 "                                                                                      ",
@@ -302,7 +301,7 @@ export default function Home() {
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
-      <div className="w-full max-w-[900px] h-full">
+      <div className="w-full max-w-[900px] mx-auto h-full">
         <TerminalComponent
           onCommandExecute={executeCommand}
         />
