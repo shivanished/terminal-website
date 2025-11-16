@@ -91,14 +91,12 @@ export default function Home() {
                `;
 
   useEffect(() => {
-    // Set initial window width once on mount
     if (typeof window !== 'undefined') {
       setWindowWidth(window.innerWidth);
     }
   }, []);
 
   useEffect(() => {
-    // Load JSON data from public/data directory
     const loadData = async () => {
       try {
         const [aboutRes, experienceRes, projectsRes, linksRes] = await Promise.all([
@@ -127,12 +125,10 @@ export default function Home() {
   }, []);
 
   const parseCommand = (input: string): string[] => {
-    // Split by spaces and non-alphanumeric characters, get first element
     const match = input.match(/^([a-zA-Z0-9-]+)/);
     return match ? [match[1], input.substring(match[1].length).trim()] : [input.trim(), ''];
   };
 
-  // ANSI color codes
   const colors = {
     reset: '\x1b[0m',
     green: '\x1b[32m',
@@ -152,7 +148,6 @@ export default function Home() {
     const [command, args] = parseCommand(trimmedInput);
     const outputs: CommandOutput[] = [];
 
-    // Handle clear command - return special flag (handled in Terminal component)
     if (command === 'clear') {
       return [{ type: 'output', content: '__CLEAR__' }];
     }
@@ -251,7 +246,7 @@ export default function Home() {
               `  ${colors.brightGreen}--github${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-g${colors.reset}    ${colors.gray}-${colors.reset} Open GitHub profile`
           });
         } else if (args.startsWith('contact ')) {
-          const contactArg = args.substring(8).trim(); // Remove "contact " prefix
+          const contactArg = args.substring(8).trim();
           if (contactArg === '--email' || contactArg === '-e') {
             window.location.href = 'mailto:shivanshsoni@berkeley.edu';
             outputs.push({ type: 'output', content: 'Opening email client...' });
@@ -291,7 +286,6 @@ export default function Home() {
         }
         break;
       default:
-        // Extract first word for error message
         const firstWord = trimmedInput.split(/[\s\W]+/)[0] || trimmedInput;
         outputs.push({ type: 'error', content: `zsh: command not found: ${firstWord}` });
     }
