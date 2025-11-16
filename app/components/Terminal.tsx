@@ -20,6 +20,7 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
   const terminalInstanceRef = useRef<Terminal | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const [isTypewriterActive, setIsTypewriterActive] = useState(true);
 
   useEffect(() => {
     if (!terminalRef.current || terminalInstanceRef.current) return;
@@ -105,12 +106,19 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
           setTimeout(() => {
             // Simulate Enter key press
             (term as any).triggerData?.('\r');
+            // Re-enable input after Enter is pressed
+            setTimeout(() => {
+              (term as any).isTypewriterActive = false;
+              setIsTypewriterActive(false); // Update React state to re-enable interaction
+            }, 100); // Small delay to ensure Enter is processed
           }, 500); // 500ms delay before pressing Enter
         }
       };
       
       // Start typewriter effect after a short delay
       setTimeout(() => {
+        // Disable input during typewriter effect
+        (term as any).isTypewriterActive = true;
         typeNextChar();
       }, 1000); // 1 second delay after prompt appears
 
@@ -170,12 +178,110 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
     };
   }, [onCommandExecute]);
 
+  // Block all user interaction during typewriter effect
+  useEffect(() => {
+    if (!isTypewriterActive || !terminalRef.current) return;
+
+    const terminalElement = terminalRef.current;
+
+    const blockMouseInteraction = (e: Event) => {
+      const target = e.target as Node;
+      // Block mouse events that target the terminal or its children
+      if (terminalElement.contains(target)) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      }
+    };
+
+    const blockKeyboardInteraction = (e: KeyboardEvent) => {
+      // Block all keyboard events during typewriter (they might target terminal even if not direct target)
+      // Check if terminal or any of its children has focus, or if event would affect terminal
+      const activeElement = document.activeElement;
+      if (terminalElement.contains(activeElement) || terminalElement === activeElement) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      }
+    };
+
+    const blockFocus = (e: FocusEvent) => {
+      const target = e.target as Node;
+      // Block focus events on terminal
+      if (terminalElement.contains(target)) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+      }
+    };
+
+    // Block mouse events on terminal
+    const mouseEvents = ['mousedown', 'mouseup', 'click', 'touchstart', 'touchend'];
+    mouseEvents.forEach(eventType => {
+      document.addEventListener(eventType, blockMouseInteraction, { capture: true, passive: false });
+    });
+
+    // Block keyboard events globally (but only if terminal would receive them)
+    const keyboardEvents = ['keydown', 'keypress', 'keyup'];
+    keyboardEvents.forEach(eventType => {
+      document.addEventListener(eventType, blockKeyboardInteraction as EventListener, { capture: true, passive: false });
+    });
+
+    // Block focus events on terminal
+    const focusEvents = ['focus', 'focusin'];
+    focusEvents.forEach(eventType => {
+      document.addEventListener(eventType, blockFocus, { capture: true, passive: false });
+    });
+
+    return () => {
+      // Cleanup: remove all event listeners when typewriter completes
+      mouseEvents.forEach(eventType => {
+        document.removeEventListener(eventType, blockMouseInteraction, { capture: true });
+      });
+      keyboardEvents.forEach(eventType => {
+        document.removeEventListener(eventType, blockKeyboardInteraction as EventListener, { capture: true });
+      });
+      focusEvents.forEach(eventType => {
+        document.removeEventListener(eventType, blockFocus, { capture: true });
+      });
+    };
+  }, [isTypewriterActive]);
+
   return (
     <div 
       id="terminal"
       ref={terminalRef} 
       className="h-full w-full"
-      style={{ minHeight: '100vh' }}
+      style={{ 
+        minHeight: '100vh',
+        pointerEvents: isTypewriterActive ? 'none' : 'auto',
+        userSelect: isTypewriterActive ? 'none' : 'auto',
+      }}
+      onMouseDown={(e) => {
+        if (isTypewriterActive) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
+      onFocus={(e) => {
+        if (isTypewriterActive) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
+      onKeyDown={(e) => {
+        if (isTypewriterActive) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
+      onKeyPress={(e) => {
+        if (isTypewriterActive) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
+      tabIndex={isTypewriterActive ? -1 : 0}
     />
   );
 }
@@ -321,6 +427,11 @@ function extendTerminal(term: Terminal) {
   // Store command history
   (term as any).history = [];
   (term as any).historyCursor = -1;
+  
+  // Flag to disable input during typewriter effect
+  (term as any).isTypewriterActive = false;
+  // Flag to indicate programmatic data trigger (allows bypassing typewriter lock)
+  (term as any).isProgrammaticInput = false;
 
   // Get prompt text (with ANSI colors)
   (term as any).getPrompt = () => {
@@ -403,6 +514,12 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
 
   // Store the data handler so it can be triggered programmatically
   const dataHandler = (data: string) => {
+    // Ignore user input during typewriter effect (but allow programmatic triggers)
+    if ((term as any).isTypewriterActive && !(term as any).isProgrammaticInput) {
+      // Block user input during typewriter effect
+      return;
+    }
+    
     const currentLine = (term as any).currentLine;
     const pos = (term as any).pos();
 
@@ -640,6 +757,13 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
   
   // Store reference for programmatic triggering
   (term as any).triggerData = (data: string) => {
-    dataHandler(data);
+    // Set flag to indicate this is programmatic input (bypasses typewriter lock)
+    (term as any).isProgrammaticInput = true;
+    try {
+      dataHandler(data);
+    } finally {
+      // Always clear the flag, even if handler throws
+      (term as any).isProgrammaticInput = false;
+    }
   };
 }
