@@ -213,7 +213,7 @@ export default function Home() {
               content += `  ${colors.gray}Showing 4 of ${experienceData.length} experiences. Use ${colors.brightGreen}shiv experience --all${colors.reset}${colors.gray} to see all.${colors.reset}`;
             }
             
-            outputs.push({ type: 'output', content: content.trimEnd() });
+            outputs.push({ type: 'output', content: content.trim() });
           }
         } else if (args === 'projects' || args.startsWith('projects ')) {
           if (!dataLoaded) {
