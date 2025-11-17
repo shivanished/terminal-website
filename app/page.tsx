@@ -213,7 +213,7 @@ export default function Home() {
               content += `  ${colors.gray}Showing 4 of ${experienceData.length} experiences. Use ${colors.brightGreen}shiv experience --all${colors.reset}${colors.gray} to see all.${colors.reset}`;
             }
             
-            outputs.push({ type: 'output', content: content.trim() });
+            outputs.push({ type: 'output', content: content.trimEnd() });
           }
         } else if (args === 'projects' || args.startsWith('projects ')) {
           if (!dataLoaded) {
@@ -226,13 +226,15 @@ export default function Home() {
             
             let content = '';
             displayProjects.forEach((project, index) => {
-              const isFirstProject = index === 0;
-              const indentPrefix = isFirstProject ? '  ' : '';
-              
-              let titleLine = `${indentPrefix}${colors.magenta}${project.name}${colors.reset}`;
+              let titleLine: string;
               if (project.link && project.link.trim()) {
-                // Make only the word "link" clickable
-                titleLine += ` - \x1b]8;;${project.link}\x1b\\${colors.yellow}link${colors.reset}\x1b]8;;\x1b\\`;
+                const leadingSpaces = project.name.match(/^\s*/)?.[0] || '';
+                const trailingSpaces = project.name.match(/\s*$/)?.[0] || '';
+                const trimmedName = project.name.trim();
+                
+                titleLine = `${leadingSpaces}\x1b]8;;${project.link}\x1b\\${colors.magenta}${trimmedName}${colors.reset}\x1b]8;;\x1b\\${trailingSpaces}`;
+              } else {
+                titleLine = `${colors.magenta}${project.name}${colors.reset}`;
               }
               content += `  ${titleLine}\n`;
               content += `    ${colors.cyan}${project.tagline}${colors.reset}\n`;
@@ -252,7 +254,7 @@ export default function Home() {
               content += `  ${colors.gray}Showing 4 of ${projectsData.length} projects. Add the --all flag (${colors.brightGreen}shiv projects --all${colors.reset}${colors.gray}) to see all projects. Add the ${colors.brightGreen}--verbose${colors.reset}${colors.gray} flag for descriptions. Add both for both.${colors.reset}`;
             }
             
-            outputs.push({ type: 'output', content: content.trim() });
+            outputs.push({ type: 'output', content: content.trimEnd() });
           }
         } else if (args === 'contact') {
           outputs.push({
