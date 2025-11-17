@@ -423,7 +423,14 @@ function wordWrap(text: string, maxWidth: number): string[] {
 }
 
 function stripAnsiCodes(str: string): string {
-  return str.replace(/\x1b\[[0-9;]*m/g, '');
+  // Strip ANSI color codes (\x1b[...m)
+  let result = str.replace(/\x1b\[[0-9;]*m/g, '');
+  // Strip OSC 8 hyperlink escape sequences
+  // Start sequence: \x1b]8;;URL\x1b\\ (where URL can contain any characters except \x1b)
+  result = result.replace(/\x1b\]8;;[^\x1b]*\x1b\\/g, '');
+  // End sequence: \x1b]8;;\x1b\\
+  result = result.replace(/\x1b\]8;;\x1b\\/g, '');
+  return result;
 }
 
 function scrollToBottom(term: Terminal) {

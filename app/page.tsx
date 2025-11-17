@@ -25,6 +25,7 @@ interface Project {
   description: string[];
   tech: string[];
   link?: string;
+  period?: string;
 }
 
 interface Links {
@@ -163,8 +164,8 @@ export default function Home() {
               `  ${colors.brightGreen}shiv${colors.reset}            ${colors.gray}-${colors.reset} Display ASCII art of my name\n` +
               `  ${colors.brightGreen}shiv help${colors.reset}       ${colors.gray}-${colors.reset} Show this help message\n` +
               `  ${colors.brightGreen}shiv about${colors.reset}      ${colors.gray}-${colors.reset} Display information about me\n` +
-              `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
-              `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--verbose${colors.reset} for all)\n` +
+              `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--all${colors.reset} for all)\n` +
+              `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--all${colors.reset} for all, ${colors.brightGreen}--verbose${colors.reset} for descriptions)\n` +
               `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options`
           });
         } else if (!args) {
@@ -190,9 +191,9 @@ export default function Home() {
           if (!dataLoaded) {
             outputs.push({ type: 'output', content: 'Loading...' });
           } else {
-            const isVerbose = args.includes('--verbose') || args.includes('-v');
-            const displayExperiences = isVerbose ? experienceData : experienceData.slice(0, 4);
-            const hasMore = experienceData.length > 4 && !isVerbose;
+            const showAll = args.includes('--all') || args.includes('-a');
+            const displayExperiences = showAll ? experienceData : experienceData.slice(0, 4);
+            const hasMore = experienceData.length > 4 && !showAll;
             
             let content = '';
             displayExperiences.forEach((exp) => {
@@ -209,7 +210,7 @@ export default function Home() {
             });
             
             if (hasMore) {
-              content += `  ${colors.gray}Showing 4 of ${experienceData.length} experiences. Use ${colors.brightGreen}shiv experience --verbose${colors.reset}${colors.gray} to see all.${colors.reset}`;
+              content += `  ${colors.gray}Showing 4 of ${experienceData.length} experiences. Use ${colors.brightGreen}shiv experience --all${colors.reset}${colors.gray} to see all.${colors.reset}`;
             }
             
             outputs.push({ type: 'output', content: content.trim() });
@@ -218,26 +219,37 @@ export default function Home() {
           if (!dataLoaded) {
             outputs.push({ type: 'output', content: 'Loading...' });
           } else {
-            const isVerbose = args.includes('--verbose') || args.includes('-v');
-            const displayProjects = isVerbose ? projectsData : projectsData.slice(0, 4);
-            const hasMore = projectsData.length > 4 && !isVerbose;
+            const showAll = args.includes('--all') || args.includes('-a');
+            const showDescriptions = args.includes('--verbose') || args.includes('-v');
+            const displayProjects = showAll ? projectsData : projectsData.slice(0, 4);
+            const hasMore = projectsData.length > 4 && !showAll;
             
             let content = '';
-            displayProjects.forEach((project) => {
-              let titleWithLink = `${colors.magenta}${project.name}${colors.reset}`;
+            displayProjects.forEach((project, index) => {
+              const isFirstProject = index === 0;
+              const indentPrefix = isFirstProject ? '  ' : '';
+              
+              let titleLine = `${indentPrefix}${colors.magenta}${project.name}${colors.reset}`;
               if (project.link && project.link.trim()) {
-                titleWithLink = `${colors.magenta}${project.name}${colors.reset} ${colors.yellow}- ${project.link}${colors.reset}`;
+                // Make only the word "link" clickable
+                titleLine += ` - \x1b]8;;${project.link}\x1b\\${colors.yellow}link${colors.reset}\x1b]8;;\x1b\\`;
               }
-              content += `  ${titleWithLink}\n`;
+              content += `  ${titleLine}\n`;
               content += `    ${colors.cyan}${project.tagline}${colors.reset}\n`;
-              project.description.forEach((desc) => {
-                content += `    • ${desc}\n`;
-              });
-              content += `    ${colors.gray}Tech: ${project.tech.join(', ')}${colors.reset}\n\n`;
+              if (showDescriptions) {
+                project.description.forEach((desc) => {
+                  content += `    • ${desc}\n`;
+                });
+                content += `    ${colors.gray}Tech: ${project.tech.join(', ')}${colors.reset}\n`;
+                if (project.period) {
+                  content += `    ${colors.gray}Period: ${project.period}${colors.reset}\n`;
+                }
+              }
+              content += '\n';
             });
             
             if (hasMore) {
-              content += `  ${colors.gray}Showing 4 of ${projectsData.length} projects. Use ${colors.brightGreen}shiv projects --verbose${colors.reset}${colors.gray} to see all.${colors.reset}`;
+              content += `  ${colors.gray}Showing 4 of ${projectsData.length} projects. Add the --all flag (${colors.brightGreen}shiv projects --all${colors.reset}${colors.gray}) to see all projects. Add the ${colors.brightGreen}--verbose${colors.reset}${colors.gray} flag for descriptions. Add both for both.${colors.reset}`;
             }
             
             outputs.push({ type: 'output', content: content.trim() });
