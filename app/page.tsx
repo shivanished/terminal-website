@@ -35,7 +35,6 @@ interface Links {
 }
 
 export default function Home() {
-  const [aboutData, setAboutData] = useState<string>('');
   const [experienceData, setExperienceData] = useState<Experience[]>([]);
   const [projectsData, setProjectsData] = useState<Project[]>([]);
   const [linksData, setLinksData] = useState<Links>({ x: '', linkedin: '', github: '' });
@@ -102,19 +101,16 @@ export default function Home() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [aboutRes, experienceRes, projectsRes, linksRes] = await Promise.all([
-          fetch('/data/about.json'),
+        const [experienceRes, projectsRes, linksRes] = await Promise.all([
           fetch('/data/experience.json'),
           fetch('/data/projects.json'),
           fetch('/data/links.json')
         ]);
 
-        const about = await aboutRes.json();
         const experience = await experienceRes.json();
         const projects = await projectsRes.json();
         const links = await linksRes.json();
 
-        setAboutData(about);
         setExperienceData(experience);
         setProjectsData(projects);
         setLinksData(links);
@@ -163,7 +159,6 @@ export default function Home() {
             content: `${colors.white}Available commands:${colors.reset}\n` +
               `  ${colors.brightGreen}shiv${colors.reset}            ${colors.gray}-${colors.reset} Display ASCII art of my name\n` +
               `  ${colors.brightGreen}shiv help${colors.reset}       ${colors.gray}-${colors.reset} Show this help message\n` +
-              `  ${colors.brightGreen}shiv about${colors.reset}      ${colors.gray}-${colors.reset} Display information about me\n` +
               `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--all${colors.reset} for all)\n` +
               `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--all${colors.reset} for all, ${colors.brightGreen}--verbose${colors.reset} for descriptions)\n` +
               `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options`
@@ -181,12 +176,6 @@ export default function Home() {
             type: 'output',
             content: `${displayContent}\n\nWelcome to Shiv's terminal. Type "shiv help" to get started.`
           });
-        } else if (args === 'about') {
-          if (!dataLoaded) {
-            outputs.push({ type: 'output', content: 'Loading...' });
-          } else {
-            outputs.push({ type: 'output', content: aboutData });
-          }
         } else if (args === 'experience' || args.startsWith('experience ')) {
           if (!dataLoaded) {
             outputs.push({ type: 'output', content: 'Loading...' });
