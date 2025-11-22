@@ -1,15 +1,5 @@
 [
   {
-    "title": "  Founding Engineer",
-    "company": "Zero Labs (3M+ funding pre-revenue - BoxGroup, HayStack, OpenAI, ...)",
-    "period": "Sept. 2025 - Present",
-    "description": [
-      "Own AgentOps: Built novel non-invasive browser agent integrating directly into existing chrome sessions for seamless in-browser automation; Designed the next-gen of user onboarding -- account setup in one conversation",
-      "Implemented a custom, in-house parser engine to extract financial/tax data (1040s, brokerage statements, transaction logs) from heterogeneous PDFs, improving downstream data quality for analytics and reporting",
-      "Own DevOps & infrastructure: iterated CI/CD pipelines, automated testing and deployment workflows, and scaled infra patterns to support a growing engineering team and product footprint"
-    ]
-  },
-  {
     "title": "Software Engineer Intern -- Generative AI Prototyping/Infra",
     "company": "MagicHour AI (YC W24), Oakland, CA",
     "period": "Jun. 2025 - Aug. 2025",
