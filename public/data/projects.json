@@ -1,7 +1,7 @@
 [
   {
     "name": "todo-purge",
-    "tagline": "CLI that turns TODOs/FIXMEs → Linear tickets in one command",
+    "tagline": "CLI tool that turns TODOs/FIXMEs → Linear tickets in one command",
     "description": [
       "A CLI tool that addresses the classic TODO fallacy - converting forgotten TODOs and FIXMEs into actionable Linear tickets",
       "Because as much as we hope it'll happen, we're not coming back to that TODO"
