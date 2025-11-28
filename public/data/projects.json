@@ -1,12 +1,31 @@
 [
   {
+    "name": "todo-purge",
+    "tagline": "CLI that turns TODOs/FIXMEs → Linear tickets in one command",
+    "description": [
+      "A CLI tool that addresses the classic TODO fallacy - converting forgotten TODOs and FIXMEs into actionable Linear tickets",
+      "Because as much as we hope it'll happen, we're not coming back to that TODO"
+    ],
+    "tech": ["open-source", "CLI", "GraphQL", "oclif", "npm"],
+    "link": "http://todo-purge.com",
+    "period": "Nov. 2025"
+  },
+  {
     "name": "Fashion:Week",
     "tagline": "Scroll-based Archive Fashion Platform - Merged w/ Lowheads (10M+ ARR)",
     "description": [
       "React Native + Expo mobile frontends, Supabase relational/vector databases, Powersync data synchronization",
       "Trained collaborative-filtering based recommender system using Pytorch -- powered by on-demand Modal clusters; Semantic search infra: 1M+ CLIP embedding vectors + cosine similarity querying + hybrid BM25-α reranking"
     ],
-    "tech": ["React Native", "Expo", "Supabase", "Pytorch", "CLIP", "Vector Search", "Recommender Systems"],
+    "tech": [
+      "React Native",
+      "Expo",
+      "Supabase",
+      "Pytorch",
+      "CLIP",
+      "Vector Search",
+      "Recommender Systems"
+    ],
     "link": "https://www.fashionweek.wiki/waitlist",
     "period": "Jun. 2025 - Present"
   },
@@ -17,7 +36,16 @@
       "Built Next.js frontend and backend, Elasticsearch + Supabase databases, and EigenLayer blockchain verification",
       "Mistral-7B + Elasticsearch for on-device 'posthumous chat'; LumaAI + ElevenLabs + custom-optimized MuseTalk VAE model for audiovisual 'memory' generation; cuda GPU-acceleration for inference"
     ],
-    "tech": ["AI", "Blockchain", "Next.js", "Elasticsearch", "Supabase", "EigenLayer", "VAE", "CUDA"],
+    "tech": [
+      "AI",
+      "Blockchain",
+      "Next.js",
+      "Elasticsearch",
+      "Supabase",
+      "EigenLayer",
+      "VAE",
+      "CUDA"
+    ],
     "link": "https://devpost.com/software/posthuman",
     "period": "Feb. 2025"
   },
@@ -28,7 +56,12 @@
       "Used Tesseract OCR + Liquid AI LFM2-350M to extract data from files and automate USCIS online form filling",
       "Conducted interviews with legal/immigration firms to diagnose pain points -- Contracts with 3 law firms"
     ],
-    "tech": ["Chrome Extension", "Tesseract OCR", "On-Device Inference", "Liquid AI LFM2-350M"],
+    "tech": [
+      "Chrome Extension",
+      "Tesseract OCR",
+      "On-Device Inference",
+      "Liquid AI LFM2-350M"
+    ],
     "link": "",
     "period": "Aug. 2024 - Nov. 2024"
   },
@@ -39,7 +72,17 @@
       "Built AI-powered MERN-stack web app + trained RNN models to create personalized meal plans for Berkeley students based on dining hall menu/dietary preference; Designed microservice architecture enabled by Docker",
       "REST APIs for the backend (Node/Express) & AI models (TensorFlow/Flask) microservices; Hosted on GCP"
     ],
-    "tech": ["MERN", "Docker", "RNN", "Microservices", "AI", "Node.js", "TensorFlow", "Flask", "GCP"],
+    "tech": [
+      "MERN",
+      "Docker",
+      "RNN",
+      "Microservices",
+      "AI",
+      "Node.js",
+      "TensorFlow",
+      "Flask",
+      "GCP"
+    ],
     "link": "https://drive.google.com/drive/folders/1FyUvUVRQCZwJNEQx1Gvk0HD6yatZ-Q3S?usp=drive_link",
     "period": "Mar. 2024 - Jun. 2024"
   },
