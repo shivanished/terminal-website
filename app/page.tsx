@@ -343,7 +343,7 @@ export default function Home() {
         outputs.push({
           type: "output",
           content:
-            'Yo chill don\'t delete anything haha.',
+            'Yo chill don\'t delete anything haha...',
         });
         break;
       default:
