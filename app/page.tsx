@@ -338,6 +338,14 @@ export default function Home() {
           });
         }
         break;
+      
+      case "rm":
+        outputs.push({
+          type: "output",
+          content:
+            'Yo chill don\'t delete anything haha.',
+        });
+        break;
       default:
         const firstWord = trimmedInput.split(/[\s\W]+/)[0] || trimmedInput;
         outputs.push({
