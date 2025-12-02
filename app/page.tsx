@@ -181,7 +181,7 @@ export default function Home() {
           }
           outputs.push({
             type: "output",
-            content: `${displayContent}\n\nWelcome to Shiv's terminal. Type "shiv help" to get started.`,
+            content: `${displayContent}\n\nI'm a student in UC Berkeley's MET program, previously building AI systems at MagicHour AI and Happyrobot. These days I'm into applied AI, fashion tech, and building developer tools like todo-purge. Welcome to my terminal—type "shiv help" to get started.`,
           });
         } else if (args === "experience" || args.startsWith("experience ")) {
           if (!dataLoaded) {
@@ -338,12 +338,11 @@ export default function Home() {
           });
         }
         break;
-      
+
       case "rm":
         outputs.push({
           type: "output",
-          content:
-            'Yo chill don\'t delete anything haha...',
+          content: "Yo chill don't delete anything haha...",
         });
         break;
       default:
