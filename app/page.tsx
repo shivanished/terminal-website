@@ -181,11 +181,12 @@ export default function Home() {
           }
           outputs.push({
             type: "output",
-            content: `${displayContent}\n\nHey, I'm Shivansh, an engineer who's previously built systems at ` +
+            content:
+              `${displayContent}\n\nHey, I'm Shivansh, an engineer who's previously built systems at ` +
               `${colors.white}[Stealth Startup]${colors.reset}, ` +
-              `${colors.magenta}[MagicHour AI]${colors.reset}, and ` +
-              `${colors.cyan}[Happyrobot]${colors.reset}. ` +
-              `Currently I'm building applied AI, fashion tech, and developer tools. I'm also ` +
+              `\x1b]8;;https://magichour.ai/\x1b\\${colors.magenta}[MagicHour AI]${colors.reset}\x1b]8;;\x1b\\, and ` +
+              `\x1b]8;;https://www.happyrobot.ai/\x1b\\${colors.cyan}[Happyrobot]${colors.reset}\x1b]8;;\x1b\\. ` +
+              `\n\nCurrently I'm building applied AI, fashion tech, and developer tools. I'm also ` +
               `studying EECS and Business at ${colors.yellow}UC Berkeley's M.E.T. program${colors.reset}. ` +
               `\n\nType "shiv help" to get started.`,
           });
