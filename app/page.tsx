@@ -168,7 +168,7 @@ export default function Home() {
               `  ${colors.brightGreen}shiv help${colors.reset}       ${colors.gray}-${colors.reset} Show this help message\n` +
               `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--all${colors.reset} for all)\n` +
               `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--all${colors.reset} for all, ${colors.brightGreen}--verbose${colors.reset} for descriptions)\n` +
-              `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options`,
+              `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options\n`,
           });
         } else if (!args) {
           let displayContent: string;
@@ -188,7 +188,7 @@ export default function Home() {
               `\x1b]8;;https://www.happyrobot.ai/\x1b\\${colors.cyan}[Happyrobot]${colors.reset}\x1b]8;;\x1b\\. ` +
               `\n\nCurrently I'm building applied AI, fashion tech, and developer tools. I'm also ` +
               `studying EECS and Business at ${colors.yellow}UC Berkeley's M.E.T. program${colors.reset}. ` +
-              `\n\n${colors.gray}Type "shiv help" to get started.${colors.reset}`,
+              `\n\n${colors.gray}Type "shiv help" to get started.\n${colors.reset}`,
           });
         } else if (args === "experience" || args.startsWith("experience ")) {
           if (!dataLoaded) {
@@ -220,7 +220,7 @@ export default function Home() {
               content += `  ${colors.gray}Showing 4 of ${experienceData.length} experiences. Use ${colors.brightGreen}shiv experience --all${colors.reset}${colors.gray} to see all.${colors.reset}`;
             }
 
-            outputs.push({ type: "output", content: content.trim() });
+            outputs.push({ type: "output", content: content.trim() + "\n" });
           }
         } else if (args === "projects" || args.startsWith("projects ")) {
           if (!dataLoaded) {
