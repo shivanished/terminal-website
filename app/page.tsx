@@ -181,7 +181,7 @@ export default function Home() {
           }
           outputs.push({
             type: "output",
-            content: `${displayContent}\n\nI'm a student in UC Berkeley's MET program, previously building AI systems at MagicHour AI and Happyrobot. These days I'm into applied AI, fashion tech, and building developer tools like todo-purge. Welcome to my terminal—type "shiv help" to get started.`,
+            content: `${displayContent}\n\nHey, I'm Shivansh, an engineer who's previously built AI systems at [Stealth Startup], [MagicHour AI] and [Happyrobot]. Currently I'm building in applied AI, fashion tech, and developer tools. I'm also a studying EECS and Business at UC Berkeley's M.E.T. program. Welcome to my terminal—type "shiv help" to get started.`,
           });
         } else if (args === "experience" || args.startsWith("experience ")) {
           if (!dataLoaded) {
