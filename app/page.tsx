@@ -188,7 +188,7 @@ export default function Home() {
               `\x1b]8;;https://www.happyrobot.ai/\x1b\\${colors.cyan}[Happyrobot]${colors.reset}\x1b]8;;\x1b\\. ` +
               `\n\nCurrently I'm building applied AI, fashion tech, and developer tools. I'm also ` +
               `studying EECS and Business at ${colors.yellow}UC Berkeley's M.E.T. program${colors.reset}. ` +
-              `\n\nType "shiv help" to get started.`,
+              `\n\n${colors.gray}Type "shiv help" to get started.${colors.reset}`,
           });
         } else if (args === "experience" || args.startsWith("experience ")) {
           if (!dataLoaded) {
