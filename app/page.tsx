@@ -181,7 +181,13 @@ export default function Home() {
           }
           outputs.push({
             type: "output",
-            content: `${displayContent}\n\nHey, I'm Shivansh, an engineer who's previously built AI systems at [Stealth Startup], [MagicHour AI] and [Happyrobot]. Currently I'm building in applied AI, fashion tech, and developer tools. I'm also a studying EECS and Business at UC Berkeley's M.E.T. program. Welcome to my terminal—type "shiv help" to get started.`,
+            content: `${displayContent}\n\nHey, I'm Shivansh, an engineer who's previously built systems at ` +
+              `${colors.white}[Stealth Startup]${colors.reset}, ` +
+              `${colors.magenta}[MagicHour AI]${colors.reset}, and ` +
+              `${colors.cyan}[Happyrobot]${colors.reset}. ` +
+              `Currently I'm building applied AI, fashion tech, and developer tools. I'm also ` +
+              `studying EECS and Business at ${colors.yellow}UC Berkeley's M.E.T. program${colors.reset}. ` +
+              `\n\nType "shiv help" to get started.`,
           });
         } else if (args === "experience" || args.startsWith("experience ")) {
           if (!dataLoaded) {
