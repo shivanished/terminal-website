@@ -168,7 +168,7 @@ export default function Home() {
               `  ${colors.brightGreen}shiv help${colors.reset}       ${colors.gray}-${colors.reset} Show this help message\n` +
               `  ${colors.brightGreen}shiv experience${colors.reset} ${colors.gray}-${colors.reset} Show my work experience (use ${colors.brightGreen}--all${colors.reset} for all)\n` +
               `  ${colors.brightGreen}shiv projects${colors.reset}   ${colors.gray}-${colors.reset} List my projects (use ${colors.brightGreen}--all${colors.reset} for all, ${colors.brightGreen}--verbose${colors.reset} for descriptions)\n` +
-              `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options\n`,
+              `  ${colors.brightGreen}shiv contact${colors.reset}    ${colors.gray}-${colors.reset} List contact options\n\n`,
           });
         } else if (!args) {
           let displayContent: string;
@@ -263,7 +263,7 @@ export default function Home() {
             });
 
             if (hasMore) {
-              content += `  ${colors.gray}Showing 4 of ${projectsData.length} projects. Add the --all flag (${colors.brightGreen}shiv projects --all${colors.reset}${colors.gray}) to see all projects. Add the ${colors.brightGreen}--verbose${colors.reset}${colors.gray} flag for descriptions. Add both for both.${colors.reset}`;
+              content += `  ${colors.gray}Showing 4 of ${projectsData.length} projects. Add the --all flag (${colors.brightGreen}shiv projects --all${colors.reset}${colors.gray}) to see all projects. Add the ${colors.brightGreen}--verbose${colors.reset}${colors.gray} flag for descriptions. Add both for both.\n${colors.reset}`;
             }
 
             outputs.push({ type: "output", content: content.trimEnd() });
@@ -279,7 +279,7 @@ export default function Home() {
               `  ${colors.brightGreen}--message${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-m${colors.reset}   ${colors.gray}-${colors.reset} Open messages app\n` +
               `  ${colors.brightGreen}-x${colors.reset}                ${colors.gray}-${colors.reset} Open X (Twitter) profile\n` +
               `  ${colors.brightGreen}--linkedin${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-l${colors.reset}  ${colors.gray}-${colors.reset} Open LinkedIn profile\n` +
-              `  ${colors.brightGreen}--github${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-g${colors.reset}    ${colors.gray}-${colors.reset} Open GitHub profile`,
+              `  ${colors.brightGreen}--github${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-g${colors.reset}    ${colors.gray}-${colors.reset} Open GitHub profile\n`,
           });
         } else if (args.startsWith("contact ")) {
           const contactArg = args.substring(8).trim();
