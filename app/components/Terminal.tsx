@@ -425,10 +425,14 @@ function wordWrap(text: string, maxWidth: number): string[] {
 function stripAnsiCodes(str: string): string {
   // Strip ANSI color codes (\x1b[...m)
   let result = str.replace(/\x1b\[[0-9;]*m/g, '');
-  // Strip OSC 8 hyperlink escape sequences
-  // Start sequence: \x1b]8;;URL\x1b\\ (where URL can contain any characters except \x1b)
+  // Strip OSC 8 hyperlink escape sequences (both BEL and ESC \ terminated)
+  // Start sequence with BEL: \x1b]8;;URL\x07
+  result = result.replace(/\x1b\]8;;[^\x07\x1b]*\x07/g, '');
+  // End sequence with BEL: \x1b]8;;\x07
+  result = result.replace(/\x1b\]8;;\x07/g, '');
+  // Start sequence with ESC \: \x1b]8;;URL\x1b\\ (where URL can contain any characters except \x1b)
   result = result.replace(/\x1b\]8;;[^\x1b]*\x1b\\/g, '');
-  // End sequence: \x1b]8;;\x1b\\
+  // End sequence with ESC \: \x1b]8;;\x1b\\
   result = result.replace(/\x1b\]8;;\x1b\\/g, '');
   return result;
 }
