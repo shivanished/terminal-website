@@ -6,7 +6,7 @@
       "A CLI tool that addresses the classic TODO fallacy - converting forgotten TODOs and FIXMEs into actionable Linear tickets",
       "Because as much as we hope it'll happen, we're not coming back to that TODO"
     ],
-    "tech": ["open-source", "CLI", "GraphQL", "oclif", "npm"],
+    "tech": ["open-source", "CLI", "GraphQL", "oclif", "npm", "Applied AI"],
     "link": "http://todo-purge.com",
     "period": "Nov. 2025"
   },
