@@ -112,6 +112,22 @@ export default function Home() {
     loadData();
   }, []);
 
+  // Set html and body background color based on mode
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const html = document.documentElement;
+      const body = document.body;
+
+      if (mode === "plain") {
+        html.style.backgroundColor = "#ffffff";
+        body.style.backgroundColor = "#ffffff";
+      } else {
+        html.style.backgroundColor = "#000000";
+        body.style.backgroundColor = "#000000";
+      }
+    }
+  }, [mode]);
+
   const parseCommand = (input: string): string[] => {
     const match = input.match(/^([a-zA-Z0-9-]+)/);
     return match

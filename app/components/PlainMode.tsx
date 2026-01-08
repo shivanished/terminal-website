@@ -20,10 +20,13 @@ export default function PlainMode({
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div
+      className="min-h-screen bg-white"
+      style={{ fontFamily: "var(--font-tinos), serif" }}
+    >
       <main className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Hero Section */}
-        <header className="py-12 md:py-16">
+        <header className="pt-12 md:pt-16 pb-6 md:pb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-black mb-3">
             Shivansh Soni
           </h1>
@@ -83,28 +86,6 @@ export default function PlainMode({
           </div>
           <div className="text-black leading-relaxed max-w-3xl space-y-3">
             <p>
-              Hey, I'm Shivansh, an engineer who's previously built systems at{" "}
-              <span className="font-semibold">[Stealth Startup]</span>,{" "}
-              <a
-                href="https://magichour.ai/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black hover:text-black font-semibold underline decoration-black"
-              >
-                MagicHour AI
-              </a>
-              , and{" "}
-              <a
-                href="https://www.happyrobot.ai/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black hover:text-black font-semibold underline decoration-black"
-              >
-                Happyrobot
-              </a>
-              .
-            </p>
-            <p>
               Currently I'm building applied AI, fashion tech, and developer
               tools. I'm also studying EECS and Business at{" "}
               <span className="text-black font-semibold">
@@ -116,7 +97,7 @@ export default function PlainMode({
         </header>
 
         {/* Experience Section */}
-        <section className="mb-16 md:mb-20">
+        <section className="mb-8 md:mb-10">
           <h2 className="text-xl font-bold text-black mb-6 border-b-2 border-black pb-2">
             Experience
           </h2>
@@ -133,9 +114,7 @@ export default function PlainMode({
                   <p className="text-sm text-black font-semibold">
                     {exp.company}
                   </p>
-                  <p className="text-xs text-black font-mono mb-2">
-                    {exp.period}
-                  </p>
+                  <p className="text-xs text-black mb-2">{exp.period}</p>
                 </div>
                 {normalizeDescription(exp.description).length > 0 && (
                   <div className="max-h-0 overflow-hidden group-hover:max-h-96 transition-all duration-500">
@@ -155,7 +134,7 @@ export default function PlainMode({
         </section>
 
         {/* Projects Section */}
-        <section className="mb-16 md:mb-20">
+        <section className="mb-8 md:mb-10">
           <h2 className="text-xl font-bold text-black mb-6 border-b-2 border-black pb-2">
             Projects
           </h2>
@@ -199,16 +178,14 @@ export default function PlainMode({
                   {project.tech.map((tech, i) => (
                     <span
                       key={i}
-                      className="px-1.5 py-0.5 bg-white border border-black text-black text-[10px] rounded font-mono"
+                      className="px-1.5 py-0.5 bg-white border border-black text-black text-[10px] rounded"
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
                 {project.period && (
-                  <p className="text-[10px] text-black font-mono">
-                    {project.period}
-                  </p>
+                  <p className="text-[10px] text-black">{project.period}</p>
                 )}
               </div>
             ))}
