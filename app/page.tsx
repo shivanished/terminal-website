@@ -363,7 +363,7 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="min-h-screen w-screen overflow-auto bg-white">
+        <div className="min-h-screen w-full bg-white">
           <PlainMode
             experienceData={experienceData}
             projectsData={projectsData}
