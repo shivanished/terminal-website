@@ -27,9 +27,60 @@ export default function PlainMode({
           <h1 className="text-2xl md:text-3xl font-bold text-black mb-3">
             Shivansh Soni
           </h1>
-          <p className="text-xl md:text-2xl text-black mb-6">
+          <p className="text-xl md:text-2xl text-black mb-2">
             shivanshsoni [at] berkeley [dot] edu
           </p>
+          <div className="text-black mb-6">
+            {linksData.github && (
+              <a
+                href={linksData.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-black underline decoration-black"
+              >
+                Github
+              </a>
+            )}
+            {linksData.x && (
+              <>
+                {" "}
+                <a
+                  href={linksData.x}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black underline decoration-black"
+                >
+                  X
+                </a>
+              </>
+            )}
+            {linksData.linkedin && (
+              <>
+                {" "}
+                <a
+                  href={linksData.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black underline decoration-black"
+                >
+                  Linkedin
+                </a>
+              </>
+            )}
+            {linksData.instagram && (
+              <>
+                {" "}
+                <a
+                  href={linksData.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black underline decoration-black"
+                >
+                  Instagram
+                </a>
+              </>
+            )}
+          </div>
           <div className="text-black leading-relaxed max-w-3xl space-y-3">
             <p>
               Hey, I'm Shivansh, an engineer who's previously built systems at{" "}
@@ -66,28 +117,31 @@ export default function PlainMode({
 
         {/* Experience Section */}
         <section className="mb-16 md:mb-20">
-          <h2 className="text-3xl font-bold text-black mb-8 border-b-2 border-black pb-3">
+          <h2 className="text-xl font-bold text-black mb-6 border-b-2 border-black pb-2">
             Experience
           </h2>
-          <div className="space-y-8">
+          <div className="space-y-6">
             {experienceData.map((exp, index) => (
-              <div key={index} className="relative pl-6 group">
-                <div className="absolute left-0 top-0 w-0.5 bg-black h-20 group-hover:h-full transition-all duration-500"></div>
-                <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-black border-2 border-white z-10"></div>
+              <div
+                key={index}
+                className="relative pl-6 border-l-2 border-black group"
+              >
                 <div className="cursor-pointer">
-                  <h3 className="text-xl font-bold text-black">{exp.title}</h3>
-                  <p className="text-lg text-black font-semibold">
+                  <h3 className="text-base font-bold text-black">
+                    {exp.title}
+                  </h3>
+                  <p className="text-sm text-black font-semibold">
                     {exp.company}
                   </p>
-                  <p className="text-sm text-black font-mono mb-3">
+                  <p className="text-xs text-black font-mono mb-2">
                     {exp.period}
                   </p>
                 </div>
                 {normalizeDescription(exp.description).length > 0 && (
                   <div className="max-h-0 overflow-hidden group-hover:max-h-96 transition-all duration-500">
-                    <ul className="space-y-2">
+                    <ul className="space-y-1 pb-2">
                       {normalizeDescription(exp.description).map((desc, i) => (
-                        <li key={i} className="text-black flex">
+                        <li key={i} className="text-black flex text-sm">
                           <span className="mr-2 text-black">•</span>
                           <span>{desc}</span>
                         </li>
@@ -102,14 +156,14 @@ export default function PlainMode({
 
         {/* Projects Section */}
         <section className="mb-16 md:mb-20">
-          <h2 className="text-3xl font-bold text-black mb-8 border-b-2 border-black pb-3">
+          <h2 className="text-xl font-bold text-black mb-6 border-b-2 border-black pb-2">
             Projects
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {projectsData.map((project, index) => (
               <div
                 key={index}
-                className="p-6 bg-white border border-black rounded-lg hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+                className="p-4 bg-white border border-black rounded-lg hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
               >
                 {project.link ? (
                   <a
@@ -118,20 +172,22 @@ export default function PlainMode({
                     rel="noopener noreferrer"
                     className="block group"
                   >
-                    <h3 className="text-xl font-bold text-black group-hover:text-black mb-2 flex items-center gap-2">
+                    <h3 className="text-base font-bold text-black group-hover:text-black mb-1 flex items-center gap-2">
                       {project.name}
-                      <span className="text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                         ↗
                       </span>
                     </h3>
                   </a>
                 ) : (
-                  <h3 className="text-xl font-bold text-black mb-2">
+                  <h3 className="text-base font-bold text-black mb-1">
                     {project.name}
                   </h3>
                 )}
-                <p className="text-black font-medium mb-3">{project.tagline}</p>
-                <ul className="space-y-1 mb-4 text-sm text-black">
+                <p className="text-sm text-black font-medium mb-2">
+                  {project.tagline}
+                </p>
+                <ul className="space-y-1 mb-3 text-xs text-black">
                   {project.description.slice(0, 2).map((desc, i) => (
                     <li key={i} className="flex">
                       <span className="mr-2 text-black">•</span>
@@ -139,79 +195,23 @@ export default function PlainMode({
                     </li>
                   ))}
                 </ul>
-                <div className="flex flex-wrap gap-2 mb-3">
+                <div className="flex flex-wrap gap-1.5 mb-2">
                   {project.tech.map((tech, i) => (
                     <span
                       key={i}
-                      className="px-2 py-1 bg-white border border-black text-black text-xs rounded font-mono"
+                      className="px-1.5 py-0.5 bg-white border border-black text-black text-[10px] rounded font-mono"
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
                 {project.period && (
-                  <p className="text-xs text-black font-mono">
+                  <p className="text-[10px] text-black font-mono">
                     {project.period}
                   </p>
                 )}
               </div>
             ))}
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-black mb-8 border-b-2 border-black pb-3">
-            Contact
-          </h2>
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="mailto:shivanshsoni@berkeley.edu"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-black transition-colors"
-            >
-              <span>📧</span>
-              <span>Email</span>
-            </a>
-            <a
-              href="sms:+19516422354"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-black transition-colors"
-            >
-              <span>💬</span>
-              <span>Message</span>
-            </a>
-            {linksData.x && (
-              <a
-                href={linksData.x}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-black transition-colors"
-              >
-                <span>𝕏</span>
-                <span>X</span>
-              </a>
-            )}
-            {linksData.linkedin && (
-              <a
-                href={linksData.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-black transition-colors"
-              >
-                <span>💼</span>
-                <span>LinkedIn</span>
-              </a>
-            )}
-            {linksData.github && (
-              <a
-                href={linksData.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-lg hover:bg-black transition-colors"
-              >
-                <span>🐙</span>
-                <span>GitHub</span>
-              </a>
-            )}
           </div>
         </section>
 

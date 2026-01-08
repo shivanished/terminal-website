@@ -25,6 +25,7 @@ export default function Home() {
     x: "",
     linkedin: "",
     github: "",
+    instagram: "",
   });
   const [dataLoaded, setDataLoaded] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -260,7 +261,6 @@ export default function Home() {
               `For example: "shiv contact --email" or "shiv contact -e" (both work the same way).${colors.reset}\n\n` +
               `${colors.white}Contact options:${colors.reset}\n` +
               `  ${colors.brightGreen}--email${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-e${colors.reset}     ${colors.gray}-${colors.reset} Open email client\n` +
-              `  ${colors.brightGreen}--message${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-m${colors.reset}   ${colors.gray}-${colors.reset} Open messages app\n` +
               `  ${colors.brightGreen}-x${colors.reset}                ${colors.gray}-${colors.reset} Open X (Twitter) profile\n` +
               `  ${colors.brightGreen}--linkedin${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-l${colors.reset}  ${colors.gray}-${colors.reset} Open LinkedIn profile\n` +
               `  ${colors.brightGreen}--github${colors.reset} ${colors.gray}or${colors.reset} ${colors.brightGreen}-g${colors.reset}    ${colors.gray}-${colors.reset} Open GitHub profile\n`,
@@ -272,12 +272,6 @@ export default function Home() {
             outputs.push({
               type: "output",
               content: "Opening email client...",
-            });
-          } else if (contactArg === "--message" || contactArg === "-m") {
-            window.location.href = "sms:+19516422354";
-            outputs.push({
-              type: "output",
-              content: "Opening messages app...",
             });
           } else if (contactArg === "-x") {
             if (linksData.x) {
@@ -356,7 +350,7 @@ export default function Home() {
       {!showModeSelection && <ModeToggle />}
 
       {/* Conditional rendering based on mode */}
-      {mode === 'tui' ? (
+      {mode === "tui" ? (
         <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
           <div className="w-full max-w-[900px] h-full">
             <TerminalComponent onCommandExecute={executeCommand} />

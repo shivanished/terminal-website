@@ -18,4 +18,5 @@ export interface Links {
   x: string;
   linkedin: string;
   github: string;
+  instagram?: string;
 }
