@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Experience, Project, Links } from "../types";
 
 interface PlainModeProps {
@@ -13,11 +14,20 @@ export default function PlainMode({
   projectsData,
   linksData,
 }: PlainModeProps) {
+  const [visibleProjects, setVisibleProjects] = useState(4);
+
   // Normalize description to always be an array
   const normalizeDescription = (description?: string | string[]): string[] => {
     if (!description) return [];
     return Array.isArray(description) ? description : [description];
   };
+
+  const handleSeeMore = () => {
+    setVisibleProjects((prev) => Math.min(prev + 4, projectsData.length));
+  };
+
+  const displayedProjects = projectsData.slice(0, visibleProjects);
+  const hasMore = visibleProjects < projectsData.length;
 
   return (
     <div
@@ -26,7 +36,7 @@ export default function PlainMode({
     >
       <main className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Hero Section */}
-        <header className="pt-12 md:pt-16 pb-6 md:pb-8">
+        <header className="pt-6 md:pt-8 pb-6 md:pb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-black mb-3">
             Shivansh Soni
           </h1>
@@ -139,57 +149,100 @@ export default function PlainMode({
             Projects
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {projectsData.map((project, index) => (
-              <div
-                key={index}
-                className="p-4 bg-white border border-black rounded-lg hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
-              >
-                {project.link ? (
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block group"
-                  >
-                    <h3 className="text-base font-bold text-black group-hover:text-black mb-1 flex items-center gap-2">
+            {displayedProjects.map((project, index) =>
+              project.link ? (
+                <a
+                  key={index}
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-4 bg-white border border-black rounded-lg hover:shadow-lg hover:-translate-y-1 transition-all duration-200 group flex flex-col h-full"
+                >
+                  <div className="flex-1">
+                    <h3 className="text-base font-bold text-black mb-1 flex items-center gap-2">
                       {project.name}
                       <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity">
                         ↗
                       </span>
                     </h3>
-                  </a>
-                ) : (
-                  <h3 className="text-base font-bold text-black mb-1">
-                    {project.name}
-                  </h3>
-                )}
-                <p className="text-sm text-black font-medium mb-2">
-                  {project.tagline}
-                </p>
-                <ul className="space-y-1 mb-3 text-xs text-black">
-                  {project.description.slice(0, 2).map((desc, i) => (
-                    <li key={i} className="flex">
-                      <span className="mr-2 text-black">•</span>
-                      <span>{desc}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex flex-wrap gap-1.5 mb-2">
-                  {project.tech.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-1.5 py-0.5 bg-white border border-black text-black text-[10px] rounded"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                    <p className="text-sm text-black font-medium mb-2">
+                      {project.tagline}
+                    </p>
+                    <ul className="space-y-1 mb-3 text-xs text-black">
+                      {project.description.slice(0, 2).map((desc, i) => (
+                        <li key={i} className="flex">
+                          <span className="mr-2 text-black">•</span>
+                          <span>{desc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {project.tech.map((tech, i) => (
+                        <span
+                          key={i}
+                          className="px-1.5 py-0.5 bg-white border border-black text-black text-[10px] rounded"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  {project.period && (
+                    <p className="text-[10px] text-black mt-auto">
+                      {project.period}
+                    </p>
+                  )}
+                </a>
+              ) : (
+                <div
+                  key={index}
+                  className="p-4 bg-white border border-black rounded-lg flex flex-col h-full"
+                >
+                  <div className="flex-1">
+                    <h3 className="text-base font-bold text-black mb-1">
+                      {project.name}
+                    </h3>
+                    <p className="text-sm text-black font-medium mb-2">
+                      {project.tagline}
+                    </p>
+                    <ul className="space-y-1 mb-3 text-xs text-black">
+                      {project.description.slice(0, 2).map((desc, i) => (
+                        <li key={i} className="flex">
+                          <span className="mr-2 text-black">•</span>
+                          <span>{desc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {project.tech.map((tech, i) => (
+                        <span
+                          key={i}
+                          className="px-1.5 py-0.5 bg-white border border-black text-black text-[10px] rounded"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  {project.period && (
+                    <p className="text-[10px] text-black mt-auto">
+                      {project.period}
+                    </p>
+                  )}
                 </div>
-                {project.period && (
-                  <p className="text-[10px] text-black">{project.period}</p>
-                )}
-              </div>
-            ))}
+              )
+            )}
           </div>
+          {hasMore && (
+            <div className="text-black mt-6">
+              <button
+                onClick={handleSeeMore}
+                className="text-black underline decoration-black cursor-pointer hover:no-underline"
+              >
+                See More
+              </button>
+            </div>
+          )}
         </section>
 
         {/* Footer */}

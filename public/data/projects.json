@@ -23,8 +23,7 @@
       "Supabase",
       "Pytorch",
       "CLIP",
-      "Vector Search",
-      "Recommender Systems"
+      "Vector Search"
     ],
     "link": "https://www.fashionweek.wiki/waitlist",
     "period": "Jun. 2025 - Present"
@@ -37,11 +36,10 @@
       "Mistral-7B + Elasticsearch for on-device 'posthumous chat'; LumaAI + ElevenLabs + custom-optimized MuseTalk VAE model for audiovisual 'memory' generation; cuda GPU-acceleration for inference"
     ],
     "tech": [
-      "AI",
       "Blockchain",
       "Next.js",
-      "Elasticsearch",
-      "Supabase",
+      "Postgres",
+      "pgvector",
       "EigenLayer",
       "VAE",
       "CUDA"
@@ -58,8 +56,8 @@
     ],
     "tech": [
       "Chrome Extension",
-      "Tesseract OCR",
-      "On-Device Inference",
+      "OCR",
+      "Local Inference",
       "Liquid AI LFM2-350M"
     ],
     "link": "",
