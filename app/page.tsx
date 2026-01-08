@@ -2,6 +2,11 @@
 
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import { useViewMode } from "./contexts/ViewModeContext";
+import PlainMode from "./components/PlainMode";
+import ModeSelectionModal from "./components/ModeSelectionModal";
+import ModeToggle from "./components/ModeToggle";
+import type { Experience, Project, Links } from "./types";
 
 const TerminalComponent = dynamic(() => import("./components/Terminal"), {
   ssr: false,
@@ -12,29 +17,8 @@ interface CommandOutput {
   content: string | React.ReactNode;
 }
 
-interface Experience {
-  title: string;
-  company: string;
-  period: string;
-  description?: string | string[];
-}
-
-interface Project {
-  name: string;
-  tagline: string;
-  description: string[];
-  tech: string[];
-  link?: string;
-  period?: string;
-}
-
-interface Links {
-  x: string;
-  linkedin: string;
-  github: string;
-}
-
 export default function Home() {
+  const { mode, showModeSelection } = useViewMode();
   const [experienceData, setExperienceData] = useState<Experience[]>([]);
   const [projectsData, setProjectsData] = useState<Project[]>([]);
   const [linksData, setLinksData] = useState<Links>({
@@ -364,10 +348,29 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
-      <div className="w-full max-w-[900px] h-full">
-        <TerminalComponent onCommandExecute={executeCommand} />
-      </div>
-    </div>
+    <>
+      {/* Mode selection modal (only on first visit) */}
+      {showModeSelection && <ModeSelectionModal />}
+
+      {/* Mode toggle (hidden during modal) */}
+      {!showModeSelection && <ModeToggle />}
+
+      {/* Conditional rendering based on mode */}
+      {mode === 'tui' ? (
+        <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
+          <div className="w-full max-w-[900px] h-full">
+            <TerminalComponent onCommandExecute={executeCommand} />
+          </div>
+        </div>
+      ) : (
+        <div className="min-h-screen w-screen overflow-auto bg-white">
+          <PlainMode
+            experienceData={experienceData}
+            projectsData={projectsData}
+            linksData={linksData}
+          />
+        </div>
+      )}
+    </>
   );
 }
