@@ -186,7 +186,7 @@ export default function Home() {
               `${colors.white}[Stealth Startup]${colors.reset}, ` +
               `\x1b]8;;https://magichour.ai/\x07${colors.magenta}[MagicHour AI]${colors.reset}\x1b]8;;\x07, and ` +
               `\x1b]8;;https://www.happyrobot.ai/\x07${colors.cyan}[Happyrobot]${colors.reset}\x1b]8;;\x07. ` +
-              `\n\nCurrently I'm building in  applied AI, fashion tech, and developer tools. I'm also ` +
+              `\n\nCurrently I'm building in applied AI, fashion tech, and developer tools. I'm also ` +
               `studying EECS and Business at ${colors.yellow}UC Berkeley's M.E.T. program${colors.reset}. ` +
               `\n\n${colors.gray}Type "shiv help" to get started.\n${colors.reset}`,
           });
