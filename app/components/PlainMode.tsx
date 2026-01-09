@@ -40,7 +40,7 @@ export default function PlainMode({
           <h1 className="text-xl md:text-2xl font-bold text-black mb-3">
             Shivansh Soni
           </h1>
-          <p className="text-base md:text-lg text-black mb-1">
+          <p className="text-sm md:text-base text-black mb-1">
             shivanshsoni [at] berkeley [dot] edu
           </p>
           <div className="text-black mb-6">
