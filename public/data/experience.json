@@ -13,6 +13,7 @@
     "title": "Software Engineer Intern -- Generative AI Prototyping/Infra",
     "company": "MagicHour AI (YC W24), Oakland, CA",
     "period": "Jun. 2025 - Aug. 2025",
+    "url": "https://magichour.ai/",
     "description": [
       "Architected an end-to-end GenAI pipeline using chained SoTA open-source models (Wan 2.1, Sam2, GroundingDino, NormalCrafter, ...) with quantization, depth/pose encoding, & frame stitching to launch SoTA video head-swap (unlike face-swap, not commercially produced by any competitors); tool serves 5M+ MAU",
       "Enabled 48% GPU cost reductions by LoRA-fine-tuning and quantizing models, converting them to TensorRT engines (improving inference scalability), then batching inference on A100s via Triton CUDA graphs"
@@ -22,6 +23,7 @@
     "title": "Software Engineer Intern -- Applied AI/Post-training",
     "company": "Happyrobot, San Francisco, CA",
     "period": "May 2024 - Nov. 2024",
+    "url": "https://www.happyrobot.ai/",
     "description": [
       "Recommended and built a layered post-phone-call analytics system using a Pinecone vector database + L2 distance/cosine-similarity + k-nearest-neighbors, sentiment analysis, & LLM-as-a-judge to trigger alerts for previously neglected urgent situations; became core value-prop for Happyrobot",
       "Designed, developed, and integrated a LLM eval pipeline using Langsmith and 5 custom benchmarks adapted from SoTA research for evaluation/iteration speed increases of 3-10x per use case",
@@ -32,6 +34,7 @@
     "title": "Front-End Software Engineer Intern",
     "company": "Homeland Justice Systems, Riverside, CA",
     "period": "June 2022 - August 2022",
+    "url": "http://homelandjustice.com/",
     "description": [
       "Co-developed dynamic web applications using HTML, CSS, JavaScript, and React.js to replace old native apps",
       "Re-designed front-end elements for improved UI/UX, leading to a ~50% increase in customer satisfaction",

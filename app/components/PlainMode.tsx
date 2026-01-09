@@ -117,15 +117,32 @@ export default function PlainMode({
                 key={index}
                 className="relative pl-6 border-l-2 border-black group"
               >
-                <div className="cursor-pointer">
-                  <h3 className="text-base font-bold text-black">
-                    {exp.title}
-                  </h3>
-                  <p className="text-sm text-black font-semibold">
-                    {exp.company}
-                  </p>
-                  <p className="text-xs text-black mb-2">{exp.period}</p>
-                </div>
+                {exp.url ? (
+                  <a
+                    href={exp.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block cursor-pointer hover:opacity-80 transition-opacity"
+                  >
+                    <h3 className="text-base font-bold text-black">
+                      {exp.title}
+                    </h3>
+                    <p className="text-sm text-black font-semibold">
+                      {exp.company}
+                    </p>
+                    <p className="text-xs text-black mb-2">{exp.period}</p>
+                  </a>
+                ) : (
+                  <div className="cursor-pointer">
+                    <h3 className="text-base font-bold text-black">
+                      {exp.title}
+                    </h3>
+                    <p className="text-sm text-black font-semibold">
+                      {exp.company}
+                    </p>
+                    <p className="text-xs text-black mb-2">{exp.period}</p>
+                  </div>
+                )}
                 {normalizeDescription(exp.description).length > 0 && (
                   <div className="max-h-0 overflow-hidden group-hover:max-h-96 transition-all duration-500">
                     <ul className="space-y-1 pb-2">

@@ -3,6 +3,7 @@ export interface Experience {
   company: string;
   period: string;
   description?: string | string[];
+  url?: string;
 }
 
 export interface Project {
