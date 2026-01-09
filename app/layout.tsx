@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Tinos } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { ViewModeProvider } from "./contexts/ViewModeContext";
 
@@ -40,6 +41,7 @@ export default function RootLayout({
         <ViewModeProvider>
           {children}
         </ViewModeProvider>
+        <Analytics />
       </body>
     </html>
   );
