@@ -17,25 +17,21 @@ export default function ModeToggle() {
       aria-label={isPlainMode ? 'Switch to Terminal Mode' : 'Switch to Plain Mode'}
       className={`
         fixed top-3 right-3 md:top-5 md:right-5 z-40
-        flex items-center gap-2
-        px-3 py-2 md:px-4 md:py-2
-        bg-gray-900/90 backdrop-blur
-        border ${isPlainMode ? 'border-white/50' : 'border-green-500/50'}
-        rounded-lg
-        text-sm font-medium
-        ${isPlainMode ? 'text-white' : 'text-green-500'}
-        hover:scale-105 hover:brightness-110
-        active:scale-95
-        transition-all duration-200
-        shadow-lg
+        flex items-center justify-center
+        px-3 py-1.5 md:px-4 md:py-2
+        ${isPlainMode 
+          ? 'bg-white border border-black rounded-lg text-black hover:shadow-lg hover:-translate-y-1 transition-all duration-200' 
+          : 'bg-black border border-[#00ff00] rounded text-[#00ff00] hover:brightness-110 transition-all duration-200'
+        }
+        text-xs md:text-sm font-medium
       `}
+      style={{
+        fontFamily: isPlainMode 
+          ? 'var(--font-tinos), serif' 
+          : 'var(--font-geist-mono), "Courier New", monospace'
+      }}
     >
-      <span className="text-lg">
-        {isPlainMode ? '🖥️' : '📄'}
-      </span>
-      <span className="hidden md:inline">
-        {isPlainMode ? 'Terminal Mode' : 'Plain Mode'}
-      </span>
+      {isPlainMode ? 'TUI' : 'Plain'}
     </button>
   );
 }
