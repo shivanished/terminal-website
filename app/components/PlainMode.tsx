@@ -96,7 +96,7 @@ export default function PlainMode({
           </div>
           <div className="text-black leading-relaxed max-w-3xl space-y-3">
             <p>
-              Currently I'm building applied AI, fashion tech, and developer
+              Currently I'm building in applied AI, fashion tech, and developer
               tools. I'm also studying EECS and Business at{" "}
               <span className="text-black font-semibold">
                 UC Berkeley's M.E.T. program
