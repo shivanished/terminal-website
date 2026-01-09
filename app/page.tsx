@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useViewMode } from "./contexts/ViewModeContext";
 import PlainMode from "./components/PlainMode";
-import ModeSelectionModal from "./components/ModeSelectionModal";
 import ModeToggle from "./components/ModeToggle";
 import type { Experience, Project, Links } from "./types";
 
@@ -18,7 +17,7 @@ interface CommandOutput {
 }
 
 export default function Home() {
-  const { mode, showModeSelection } = useViewMode();
+  const { mode } = useViewMode();
   const [experienceData, setExperienceData] = useState<Experience[]>([]);
   const [projectsData, setProjectsData] = useState<Project[]>([]);
   const [linksData, setLinksData] = useState<Links>({
@@ -359,11 +358,8 @@ export default function Home() {
 
   return (
     <>
-      {/* Mode selection modal (only on first visit) */}
-      {showModeSelection && <ModeSelectionModal />}
-
-      {/* Mode toggle (hidden during modal) */}
-      {!showModeSelection && <ModeToggle />}
+      {/* Mode toggle */}
+      <ModeToggle />
 
       {/* Conditional rendering based on mode */}
       {mode === "tui" ? (

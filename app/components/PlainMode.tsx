@@ -37,10 +37,10 @@ export default function PlainMode({
       <main className="max-w-4xl mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Hero Section */}
         <header className="pt-6 md:pt-8 pb-6 md:pb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-black mb-3">
+          <h1 className="text-xl md:text-2xl font-bold text-black mb-3">
             Shivansh Soni
           </h1>
-          <p className="text-xl md:text-2xl text-black mb-2">
+          <p className="text-base md:text-lg text-black mb-1">
             shivanshsoni [at] berkeley [dot] edu
           </p>
           <div className="text-black mb-6">

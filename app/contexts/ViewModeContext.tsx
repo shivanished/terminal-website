@@ -23,18 +23,10 @@ export function ViewModeProvider({ children }: { children: ReactNode }) {
     setMounted(true);
 
     try {
-      // Check if user has seen the mode selection modal
-      const hasSeenModal = localStorage.getItem('hasSeenModeSelection');
-
-      if (!hasSeenModal) {
-        // First visit - show modal
-        setShowModeSelection(true);
-      } else {
-        // Not first visit - load saved mode preference
-        const savedMode = localStorage.getItem('viewMode') as ViewMode;
-        if (savedMode === 'tui' || savedMode === 'plain') {
-          setModeState(savedMode);
-        }
+      // Load saved mode preference, default to 'tui'
+      const savedMode = localStorage.getItem('viewMode') as ViewMode;
+      if (savedMode === 'tui' || savedMode === 'plain') {
+        setModeState(savedMode);
       }
     } catch (error) {
       // localStorage disabled or blocked - graceful fallback

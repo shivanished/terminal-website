@@ -36,28 +36,18 @@ export default function ModeSelectionModal() {
 
   return (
     <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-white/90 backdrop-blur-md z-50 flex items-center justify-center p-6 md:p-8"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="modal-title"
+      style={{ fontFamily: "var(--font-tinos), serif" }}
     >
-      <div className="bg-gray-900 rounded-lg shadow-2xl max-w-2xl w-full p-8 animate-fade-in">
-        <h2
-          id="modal-title"
-          className="text-2xl md:text-3xl font-bold text-white text-center mb-3"
-        >
-          Choose Your Experience
-        </h2>
-        <p className="text-gray-400 text-center mb-8">
-          Select how you'd like to view this portfolio
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      <div className="max-w-5xl w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {/* Terminal Mode Card */}
           <button
             ref={tuiButtonRef}
             onClick={() => handleSelect('tui')}
-            className="group relative p-6 bg-gray-800 border-2 border-green-500/30 rounded-lg hover:border-green-500 hover:scale-105 transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+            className="group relative focus:outline-none focus:ring-1 focus:ring-black/20"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -65,24 +55,27 @@ export default function ModeSelectionModal() {
               }
             }}
           >
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
-              🖥️
-            </div>
-            <h3 className="text-xl font-bold text-green-500 mb-2">
-              Terminal Mode
-            </h3>
-            <p className="text-gray-300 text-sm">
-              Interactive command-line interface with a retro terminal aesthetic. Type commands to explore.
-            </p>
-            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-green-500 text-xs font-mono">→</span>
+            <div className="relative overflow-hidden rounded-lg">
+              <img
+                src="/tui.png"
+                alt="Terminal UI mode"
+                className="w-full h-auto opacity-50 blur-sm group-hover:opacity-100 group-hover:blur-none transition-all duration-500 rounded-lg"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-white/30 group-hover:opacity-0 transition-opacity duration-500 rounded-lg">
+                <h3 
+                  className="text-4xl md:text-5xl text-black font-normal"
+                  style={{ fontFamily: "var(--font-geist-mono), monospace" }}
+                >
+                  Terminal UI
+                </h3>
+              </div>
             </div>
           </button>
 
           {/* Plain Mode Card */}
           <button
             onClick={() => handleSelect('plain')}
-            className="group relative p-6 bg-gray-800 border-2 border-gray-600/30 rounded-lg hover:border-white hover:scale-105 transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900"
+            className="group relative focus:outline-none focus:ring-1 focus:ring-black/20"
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -90,24 +83,23 @@ export default function ModeSelectionModal() {
               }
             }}
           >
-            <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
-              📄
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">
-              Traditional Resume
-            </h3>
-            <p className="text-gray-300 text-sm">
-              Clean, readable portfolio layout with all information displayed directly. Easy to scan and navigate.
-            </p>
-            <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-              <span className="text-white text-xs font-mono">→</span>
+            <div className="relative overflow-hidden rounded-lg">
+              <img
+                src="/plain.png"
+                alt="Plain mode"
+                className="w-full h-auto opacity-50 blur-sm group-hover:opacity-100 group-hover:blur-none transition-all duration-500 rounded-lg"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-white/30 group-hover:opacity-0 transition-opacity duration-500 rounded-lg">
+                <h3 
+                  className="text-4xl md:text-5xl text-black font-normal"
+                  style={{ fontFamily: "var(--font-tinos), serif" }}
+                >
+                  Simple UI
+                </h3>
+              </div>
             </div>
           </button>
         </div>
-
-        <p className="text-gray-500 text-xs text-center mt-6">
-          You can switch between modes anytime using the toggle button
-        </p>
       </div>
     </div>
   );
