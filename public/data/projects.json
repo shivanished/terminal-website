@@ -1,5 +1,23 @@
 [
   {
+    "name": "Axis",
+    "tagline": "Hand Gesture-Based Mouse Controller for macOS - MediaPipe-Powered Touchless Interface",
+    "description": [
+      "A native macOS application that enables full mouse control through hand gestures using MediaPipe hand tracking",
+      "Features: pinch-to-click cursor control, drag & select, scroll gestures (one/two finger flicks), zoom gestures (thumb+middle/ring pinches), real-time overlay visualization with gesture feedback, configurable sensitivity and smoothing via OneEuroFilter"
+    ],
+    "tech": [
+      "Python",
+      "MediaPipe",
+      "OpenCV",
+      "PyAutoGUI",
+      "Computer Vision",
+      "Signal Processing"
+    ],
+    "link": "",
+    "period": "Dec. 2025 - Jan. 2026"
+  },
+  {
     "name": "todo-purge",
     "tagline": "CLI tool that turns TODOs/FIXMEs → Linear tickets in one command",
     "description": [
