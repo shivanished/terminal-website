@@ -247,6 +247,7 @@ export class VirtualFileSystem {
       "pwd",
 
       "less",
+      "more",
       "clear",
       "rm",
       "whoami",
