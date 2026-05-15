@@ -89,20 +89,6 @@ function handlePwd(_args: string[], ctx: CommandContext): CommandOutput[] {
   return [{ type: "output", content: ctx.fs.pwd() }];
 }
 
-function handleHelp(): CommandOutput[] {
-  const content =
-    `${colors.white}Available commands:${colors.reset}\n` +
-    `  ${colors.brightGreen}ls${colors.reset} ${colors.gray}[path]${colors.reset}        List directory contents\n` +
-    `  ${colors.brightGreen}cd${colors.reset} ${colors.gray}<path>${colors.reset}        Change directory\n` +
-    `  ${colors.brightGreen}cat${colors.reset} ${colors.gray}<file>${colors.reset}       Display file contents\n` +
-    `  ${colors.brightGreen}pwd${colors.reset}              Print working directory\n` +
-    `  ${colors.brightGreen}whoami${colors.reset}           Print current user\n` +
-    `  ${colors.brightGreen}clear${colors.reset}            Clear the terminal\n` +
-    `  ${colors.brightGreen}help${colors.reset}             Show this help message\n\n` +
-    `${colors.gray}Tip: Try 'ls' to look around, then 'cd' into a directory.${colors.reset}\n`;
-  return [{ type: "output", content }];
-}
-
 function handleRm(): CommandOutput[] {
   return [
     { type: "output", content: "Yo chill don't delete anything haha..." },
@@ -118,7 +104,7 @@ const commandRegistry: Record<string, CommandHandler> = {
   cd: handleCd,
   cat: handleCat,
   pwd: handlePwd,
-  help: handleHelp,
+
   rm: handleRm,
   whoami: handleWhoami,
 };

@@ -245,7 +245,7 @@ export class VirtualFileSystem {
       "cd",
       "cat",
       "pwd",
-      "help",
+
       "clear",
       "rm",
       "whoami",
