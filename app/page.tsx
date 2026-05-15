@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { useViewMode } from "./contexts/ViewModeContext";
 import PlainMode from "./components/PlainMode";
 import ModeToggle from "./components/ModeToggle";
+import TerminalWindow from "./components/TerminalWindow";
 import { VirtualFileSystem } from "./lib/filesystem";
 import { executeCommand as execCmd } from "./lib/commands";
 import type { Experience, Project, Links } from "./types";
@@ -128,8 +129,8 @@ export default function Home() {
         html.style.backgroundColor = "#ffffff";
         body.style.backgroundColor = "#ffffff";
       } else {
-        html.style.backgroundColor = "#000000";
-        body.style.backgroundColor = "#000000";
+        html.style.backgroundColor = "#1a1a2e";
+        body.style.backgroundColor = "#1a1a2e";
       }
     }
   }, [mode]);
@@ -195,15 +196,21 @@ export default function Home() {
 
       {/* Conditional rendering based on mode */}
       {mode === "tui" ? (
-        <div className="h-screen w-screen overflow-hidden bg-black p-4 md:p-6 lg:p-8">
-          <div className="w-full max-w-[900px] h-full">
+        <div
+          className="h-screen w-screen overflow-hidden flex items-center justify-center"
+          style={{
+            background:
+              "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+          }}
+        >
+          <TerminalWindow>
             <TerminalComponent
               onCommandExecute={executeCommand}
               getPrompt={getPrompt}
               getPromptRaw={getPromptRaw}
               vfs={vfsRef.current}
             />
-          </div>
+          </TerminalWindow>
         </div>
       ) : (
         <div className="min-h-screen w-full bg-white">
