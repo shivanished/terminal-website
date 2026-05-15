@@ -46,8 +46,8 @@ body {
 }
 
 .xterm-cursor {
-  background-color: #00ff00 !important;
-  color: #000000 !important;
+  background-color: #c7c7c7 !important;
+  color: #1e1e1e !important;
 }
 
 /* Ensure terminal fills the viewport */

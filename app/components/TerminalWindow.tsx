@@ -16,9 +16,9 @@ export default function TerminalWindow({ children }: TerminalWindowProps) {
       <div
         className="flex items-center px-4 shrink-0 relative select-none"
         style={{
-          height: '36px',
-          background: '#2d2d2d',
-          borderBottom: '1px solid #1a1a1a',
+          height: '38px',
+          background: '#3c3c3c',
+          borderBottom: '1px solid #2a2a2a',
         }}
       >
         {/* Traffic lights */}
@@ -39,14 +39,14 @@ export default function TerminalWindow({ children }: TerminalWindowProps) {
         {/* Title text */}
         <span
           className="absolute left-1/2 -translate-x-1/2 text-xs"
-          style={{ color: '#999', fontFamily: 'var(--font-geist-mono), monospace' }}
+          style={{ color: '#999', fontFamily: '-apple-system, system-ui, sans-serif' }}
         >
           shivansh — terminal
         </span>
       </div>
 
       {/* Terminal body */}
-      <div className="flex-1 min-h-0 bg-black">
+      <div className="flex-1 min-h-0 p-1" style={{ background: '#1e1e1e' }}>
         {children}
       </div>
     </div>

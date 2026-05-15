@@ -42,14 +42,15 @@ export default function TerminalComponent({ onCommandExecute, getPrompt, getProm
         cursorBlink: true,
         cursorStyle: 'block',
         theme: {
-          background: '#000000',
-          foreground: '#00ff00',
-          cursor: '#00ff00',
-          cursorAccent: '#000000',
+          background: '#1e1e1e',
+          foreground: '#cccccc',
+          cursor: '#c7c7c7',
+          cursorAccent: '#1e1e1e',
         },
-        fontFamily: 'var(--font-geist-mono), "Courier New", monospace',
-        fontSize: 14,
+        fontFamily: '"SF Mono", Menlo, Monaco, "Courier New", monospace',
+        fontSize: 13,
         lineHeight: 1.2,
+        letterSpacing: 0,
         scrollback: 1000,
       });
 
