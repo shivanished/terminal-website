@@ -749,6 +749,7 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
     }
 
     if (data === '\t') {
+      if (!currentLine) return;
       const input = currentLine;
       const parts = input.split(/\s+/);
       const isFirstWord = parts.length <= 1;
