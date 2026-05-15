@@ -253,6 +253,7 @@ export class VirtualFileSystem {
       "vim",
       "vi",
       "nano",
+      "open",
       "clear",
       "rm",
       "whoami",

@@ -112,6 +112,7 @@ const commandRegistry: Record<string, CommandHandler> = {
   vim: handleCat,
   vi: handleCat,
   nano: handleCat,
+  open: handleCat,
   rm: handleRm,
   whoami: handleWhoami,
 };
