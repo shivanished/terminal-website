@@ -568,6 +568,7 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
       const trimmedInput = currentLine.trim();
       
       if (trimmedInput === 'clear') {
+        term.clear();
         term.write('\x1b[2J\x1b[H');
         (term as any).currentLine = '';
         (term as any).cursorPosition = 0;
@@ -588,6 +589,7 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
         const hasClear = outputs.some(output => output.content === '__CLEAR__');
         
         if (hasClear) {
+          term.clear();
           term.write('\x1b[2J\x1b[H');
           (term as any).currentLine = '';
           (term as any).cursorPosition = 0;
@@ -669,6 +671,7 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
     }
 
     if (data === '\x0c') {
+      term.clear();
       term.write('\x1b[2J\x1b[H');
       (term as any).prompt();
       return;
