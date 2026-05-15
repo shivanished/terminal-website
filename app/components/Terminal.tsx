@@ -6,6 +6,8 @@ import { FitAddon } from '@xterm/addon-fit';
 import { WebLinksAddon } from '@xterm/addon-web-links';
 import '@xterm/xterm/css/xterm.css';
 
+import { VirtualFileSystem } from '../lib/filesystem';
+
 interface CommandOutput {
   type: 'command' | 'output' | 'error';
   content: string | React.ReactNode;
@@ -13,9 +15,12 @@ interface CommandOutput {
 
 interface TerminalComponentProps {
   onCommandExecute: (command: string) => CommandOutput[];
+  getPrompt: () => string;
+  getPromptRaw: () => string;
+  vfs: VirtualFileSystem;
 }
 
-export default function TerminalComponent({ onCommandExecute }: TerminalComponentProps) {
+export default function TerminalComponent({ onCommandExecute, getPrompt, getPromptRaw, vfs }: TerminalComponentProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
   const terminalInstanceRef = useRef<Terminal | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
@@ -55,7 +60,7 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
       term.loadAddon(fitAddon);
       term.loadAddon(webLinksAddon);
 
-      extendTerminal(term);
+      extendTerminal(term, getPrompt, getPromptRaw);
 
       terminalInstanceRef.current = term;
       fitAddonRef.current = fitAddon;
@@ -90,9 +95,9 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
         }, 100);
       });
 
-      setupInputHandling(term, onCommandExecute);
+      setupInputHandling(term, onCommandExecute, vfs);
 
-      const typewriterText = 'shiv';
+      const typewriterText = 'cat about.txt';
       let charIndex = 0;
       
       const typeNextChar = () => {
@@ -183,7 +188,7 @@ export default function TerminalComponent({ onCommandExecute }: TerminalComponen
       }
       fitAddonRef.current = null;
     };
-  }, [onCommandExecute]);
+  }, [onCommandExecute, getPrompt, getPromptRaw, vfs]);
 
   // Block all user interaction during typewriter effect
   useEffect(() => {
@@ -479,7 +484,7 @@ function scrollToBottom(term: Terminal) {
   });
 }
 
-function extendTerminal(term: Terminal) {
+function extendTerminal(term: Terminal, getPromptFn: () => string, getPromptRawFn: () => string) {
   (term as any).currentLine = '';
   (term as any).cursorPosition = 0;
   (term as any).history = [];
@@ -489,11 +494,11 @@ function extendTerminal(term: Terminal) {
   (term as any).isHandlingModifierBackspace = false;
 
   (term as any).getPrompt = () => {
-    return '\x1b[32mshivansh\x1b[0m@\x1b[36mterminal\x1b[0m:\x1b[33m~\x1b[0m\x1b[32m$\x1b[0m ';
+    return getPromptFn();
   };
 
   (term as any).getPromptRaw = () => {
-    return 'shivansh@terminal:~$ ';
+    return getPromptRawFn();
   };
 
   (term as any).stripAnsi = (str: string) => {
@@ -547,7 +552,7 @@ function extendTerminal(term: Terminal) {
   };
 }
 
-function setupInputHandling(term: Terminal, onCommandExecute: (command: string) => CommandOutput[]) {
+function setupInputHandling(term: Terminal, onCommandExecute: (command: string) => CommandOutput[], vfs: VirtualFileSystem) {
   (term as any).prompt();
 
   const dataHandler = (data: string) => {
@@ -743,6 +748,38 @@ function setupInputHandling(term: Terminal, onCommandExecute: (command: string) 
     }
 
     if (data === '\t') {
+      const input = currentLine;
+      const parts = input.split(/\s+/);
+      const isFirstWord = parts.length <= 1;
+      const partial = parts[parts.length - 1] || '';
+
+      const { completions } = vfs.getCompletions(partial, isFirstWord);
+
+      if (completions.length === 1) {
+        const completed = completions[0];
+        const before = isFirstWord ? '' : parts.slice(0, -1).join(' ') + ' ';
+        const newLine = before + completed + (completed.endsWith('/') ? '' : ' ');
+        (term as any).setCurrentLine(newLine, -1);
+      } else if (completions.length > 1) {
+        // Find common prefix
+        let common = completions[0];
+        for (let i = 1; i < completions.length; i++) {
+          while (!completions[i].startsWith(common)) {
+            common = common.slice(0, -1);
+          }
+        }
+        if (common.length > partial.length) {
+          const before = isFirstWord ? '' : parts.slice(0, -1).join(' ') + ' ';
+          (term as any).setCurrentLine(before + common, -1);
+        } else {
+          term.write('\r\n');
+          term.write(completions.join('  ') + '\r\n');
+          (term as any).prompt();
+          term.write(input);
+          (term as any).currentLine = input;
+          (term as any).setPos(input.length);
+        }
+      }
       return;
     }
 
