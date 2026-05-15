@@ -249,6 +249,7 @@ export class VirtualFileSystem {
       "less",
       "more",
       "head",
+      "tail",
       "clear",
       "rm",
       "whoami",

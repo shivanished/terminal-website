@@ -108,6 +108,7 @@ const commandRegistry: Record<string, CommandHandler> = {
   less: handleCat,
   more: handleCat,
   head: handleCat,
+  tail: handleCat,
   rm: handleRm,
   whoami: handleWhoami,
 };
