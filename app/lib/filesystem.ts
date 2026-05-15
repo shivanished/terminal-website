@@ -75,7 +75,9 @@ export class VirtualFileSystem {
           content += `  * ${d}\n`;
         });
       }
-      return makeFile(`${slug}.txt`, content, { url: exp.url });
+      const yearMatch = exp.period.match(/(\d{4})\s*$/);
+      const yearPrefix = yearMatch ? yearMatch[1].slice(-2) + '-' : '';
+      return makeFile(`${yearPrefix}${slug}.txt`, content, { url: exp.url });
     });
 
     // Project files
