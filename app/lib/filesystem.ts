@@ -97,7 +97,16 @@ export class VirtualFileSystem {
       if (proj.period) {
         content += `${colors.gray}${proj.period}${colors.reset}\n`;
       }
-      return makeFile(`${slug}.txt`, content, {
+      let projYear = '';
+      if (proj.period) {
+        if (proj.period.includes('Present')) {
+          projYear = new Date().getFullYear().toString().slice(-2) + '-';
+        } else {
+          const ym = proj.period.match(/(\d{4})\s*$/);
+          if (ym) projYear = ym[1].slice(-2) + '-';
+        }
+      }
+      return makeFile(`${projYear}${slug}.txt`, content, {
         url: proj.link || undefined,
       });
     });
