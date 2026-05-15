@@ -80,8 +80,9 @@ export class VirtualFileSystem {
       return makeFile(`${yearPrefix}${slug}.txt`, content, { url: exp.url });
     });
 
-    // Project files
-    const projFiles = projects.map((proj) => {
+    // Project files grouped by year
+    const projByYear = new Map<string, FSNode[]>();
+    for (const proj of projects) {
       const slug = slugify(proj.name);
       let content = "";
       if (proj.link && proj.link.trim()) {
@@ -97,19 +98,23 @@ export class VirtualFileSystem {
       if (proj.period) {
         content += `${colors.gray}${proj.period}${colors.reset}\n`;
       }
-      let projYear = '';
+      let year = 'other';
       if (proj.period) {
         if (proj.period.includes('Present')) {
-          projYear = new Date().getFullYear().toString().slice(-2) + '-';
+          year = new Date().getFullYear().toString();
         } else {
           const ym = proj.period.match(/(\d{4})\s*$/);
-          if (ym) projYear = ym[1].slice(-2) + '-';
+          if (ym) year = ym[1];
         }
       }
-      return makeFile(`${projYear}${slug}.txt`, content, {
-        url: proj.link || undefined,
-      });
-    });
+      if (!projByYear.has(year)) projByYear.set(year, []);
+      projByYear.get(year)!.push(
+        makeFile(`${slug}.txt`, content, { url: proj.link || undefined })
+      );
+    }
+    const projDirs = Array.from(projByYear.entries())
+      .sort((a, b) => b[0].localeCompare(a[0]))
+      .map(([year, files]) => makeDir(year, files));
 
     // Contact files
     const contactFiles: FSNode[] = [
@@ -150,7 +155,7 @@ export class VirtualFileSystem {
       makeFile("about.txt", aboutContent),
       makeDir("contact", contactFiles),
       makeDir("experience", expFiles),
-      makeDir("projects", projFiles),
+      makeDir("projects", projDirs),
     ]);
   }
 
