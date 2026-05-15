@@ -110,6 +110,7 @@ const commandRegistry: Record<string, CommandHandler> = {
   head: handleCat,
   tail: handleCat,
   vim: handleCat,
+  vi: handleCat,
   rm: handleRm,
   whoami: handleWhoami,
 };
