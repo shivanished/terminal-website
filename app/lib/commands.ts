@@ -111,6 +111,7 @@ const commandRegistry: Record<string, CommandHandler> = {
   tail: handleCat,
   vim: handleCat,
   vi: handleCat,
+  nano: handleCat,
   rm: handleRm,
   whoami: handleWhoami,
 };

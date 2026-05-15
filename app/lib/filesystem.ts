@@ -252,6 +252,7 @@ export class VirtualFileSystem {
       "tail",
       "vim",
       "vi",
+      "nano",
       "clear",
       "rm",
       "whoami",
