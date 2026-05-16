@@ -83,8 +83,6 @@ export default function WallpaperBackground() {
             }}
           />
         )}
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-black/40" />
       </div>
 
       {/* Wallpaper notification toast */}
