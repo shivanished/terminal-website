@@ -32,6 +32,7 @@ export default function Home() {
   });
   const [dataLoaded, setDataLoaded] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [isMobile, setIsMobile] = useState(false);
   const vfsRef = useRef<VirtualFileSystem>(new VirtualFileSystem());
 
   const asciiArtLarge = [
@@ -88,6 +89,7 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       setWindowWidth(window.innerWidth);
+      setIsMobile(window.innerWidth < 768);
     }
   }, []);
 
@@ -190,13 +192,13 @@ export default function Home() {
     return `shivansh@terminal:${cwd}$ `;
   }, []);
 
+  const showTui = mode === "tui" && !isMobile;
+
   return (
     <>
-      {/* Mode toggle */}
-      <ModeToggle />
+      {!isMobile && <ModeToggle />}
 
-      {/* Conditional rendering based on mode */}
-      {mode === "tui" ? (
+      {showTui ? (
         <div
           className="h-screen w-screen overflow-hidden relative"
           style={{
