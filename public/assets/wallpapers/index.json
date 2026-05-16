@@ -3,7 +3,12 @@
         {
             "name": "View From Murren",
             "path": "murren.jpg",
-            "description": "The view from the top of the Gondola to Murren, Switzerland."
+            "description": "The view from the Gondola station in Murren, Switzerland. Facing Jungfraujoch, The Top of Europe, the highest mountain in the Alps."
+        },
+        {
+            "name": "Lucerne Ferry Ride",
+            "path": "lucerne.jpg",
+            "description": "The mountain views from the Lucerne Ferry Ride. A little blur since my digital camera died XD."
         }
     ]
 }
