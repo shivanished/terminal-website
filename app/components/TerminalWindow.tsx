@@ -7,7 +7,7 @@ interface TerminalWindowProps {
 export default function TerminalWindow({ children }: TerminalWindowProps) {
   return (
     <div
-      className="flex flex-col w-[95vw] h-[90vh] md:w-[90vw] lg:w-[950px] lg:max-w-[950px] md:h-[85vh] rounded-lg overflow-hidden"
+      className="relative z-10 flex flex-col w-[95vw] h-[90vh] md:w-[90vw] lg:w-[950px] lg:max-w-[950px] md:h-[85vh] rounded-lg overflow-hidden"
       style={{
         boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08)',
       }}

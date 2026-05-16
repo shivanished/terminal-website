@@ -6,6 +6,7 @@ import { useViewMode } from "./contexts/ViewModeContext";
 import PlainMode from "./components/PlainMode";
 import ModeToggle from "./components/ModeToggle";
 import TerminalWindow from "./components/TerminalWindow";
+import WallpaperBackground from "./components/WallpaperBackground";
 import { VirtualFileSystem } from "./lib/filesystem";
 import { executeCommand as execCmd } from "./lib/commands";
 import type { Experience, Project, Links } from "./types";
@@ -197,12 +198,12 @@ export default function Home() {
       {/* Conditional rendering based on mode */}
       {mode === "tui" ? (
         <div
-          className="h-screen w-screen overflow-hidden flex items-center justify-center"
+          className="h-screen w-screen overflow-hidden flex items-center justify-center relative"
           style={{
-            background:
-              "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
+            background: "#1a1a2e",
           }}
         >
+          <WallpaperBackground />
           <TerminalWindow>
             <TerminalComponent
               onCommandExecute={executeCommand}
