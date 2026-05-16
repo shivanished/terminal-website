@@ -96,8 +96,18 @@ export default function WallpaperBackground() {
               : "translate-x-full opacity-0"
           }`}
         >
-          <p className="text-sm font-medium">{toast.name}</p>
-          <p className="text-xs text-white/70 mt-0.5">{toast.description}</p>
+          <div className="flex items-start gap-2">
+            <div className="flex-1">
+              <p className="text-sm font-medium">{toast.name}</p>
+              <p className="text-xs text-white/70 mt-0.5">{toast.description}</p>
+            </div>
+            <button
+              onClick={() => setToastVisible(false)}
+              className="text-white/50 hover:text-white transition-colors text-lg leading-none -mt-0.5"
+            >
+              &times;
+            </button>
+          </div>
         </div>
       )}
     </>
