@@ -198,7 +198,7 @@ export default function Home() {
       {/* Conditional rendering based on mode */}
       {mode === "tui" ? (
         <div
-          className="h-screen w-screen overflow-hidden flex items-center justify-center relative"
+          className="h-screen w-screen overflow-hidden relative"
           style={{
             background: "#1a1a2e",
           }}
