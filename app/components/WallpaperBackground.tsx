@@ -45,9 +45,6 @@ export default function WallpaperBackground() {
           setOrder(shuffled);
           setCurrentIndex(shuffled[0]);
           setOrderPos(0);
-          setToast(wps[shuffled[0]]);
-          setToastVisible(true);
-          toastTimeoutRef.current = setTimeout(() => setToastVisible(false), TOAST_DURATION);
         }
       });
   }, []);
