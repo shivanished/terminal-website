@@ -39,6 +39,11 @@ export default function WallpaperBackground() {
       .then((data) => {
         const wps: Wallpaper[] = data.wallpapers;
         setWallpapers(wps);
+        // Preload all images so they're cached for instant display
+        wps.forEach((wp) => {
+          const img = new Image();
+          img.src = `/assets/wallpapers/${wp.path}`;
+        });
         if (wps.length > 0) {
           const indices = Array.from({ length: wps.length }, (_, i) => i);
           const shuffled = shuffle(indices);
