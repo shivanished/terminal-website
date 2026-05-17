@@ -17,40 +17,22 @@ export default function ModeToggle() {
       <button
         onClick={toggleMode}
         aria-label="Switch to Plain Mode"
-        className="fixed top-4 right-4 z-40 flex flex-col items-center gap-1 hover:scale-110 transition-transform duration-200 cursor-default"
+        className="fixed top-4 right-4 z-40 flex flex-col items-center gap-0.5 cursor-default"
       >
-        {/* macOS folder icon */}
-        <svg width="48" height="40" viewBox="0 0 48 40" fill="none">
-          {/* Folder back */}
-          <path
-            d="M4 8C4 5.79 5.79 4 8 4H18L22 8H40C42.21 8 44 9.79 44 12V32C44 34.21 42.21 36 40 36H8C5.79 36 4 34.21 4 32V8Z"
-            fill="url(#folderGradient)"
-          />
-          {/* Folder tab */}
-          <path
-            d="M4 8C4 5.79 5.79 4 8 4H17L21 8H4V8Z"
-            fill="#5AC8FA"
-          />
-          {/* Folder front face */}
-          <path
-            d="M4 14H44V32C44 34.21 42.21 36 40 36H8C5.79 36 4 34.21 4 32V14Z"
-            fill="url(#folderFrontGradient)"
-          />
-          <defs>
-            <linearGradient id="folderGradient" x1="24" y1="4" x2="24" y2="36" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#6ED4F8"/>
-              <stop offset="1" stopColor="#3BAFDA"/>
-            </linearGradient>
-            <linearGradient id="folderFrontGradient" x1="24" y1="14" x2="24" y2="36" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#5AC8FA"/>
-              <stop offset="1" stopColor="#34AADC"/>
-            </linearGradient>
-          </defs>
-        </svg>
-        {/* Label */}
+        <img
+          src="/assets/folder-icon.png"
+          alt="Plain"
+          className="w-12 h-12"
+          draggable={false}
+        />
         <span
-          className="text-white text-[11px] font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
-          style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif' }}
+          className="text-white"
+          style={{
+            fontFamily: '.AppleSystemUIFont, -apple-system, "Helvetica Neue", sans-serif',
+            fontSize: '12px',
+            fontWeight: 400,
+            textShadow: '0 1px 3px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.5)',
+          }}
         >
           Plain
         </span>
