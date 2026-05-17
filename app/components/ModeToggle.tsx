@@ -22,7 +22,7 @@ export default function ModeToggle() {
         <img
           src="/assets/folder-icon.png"
           alt="Plain"
-          className="w-12 h-12"
+          className="w-16 h-16"
           draggable={false}
         />
         <span
@@ -30,7 +30,7 @@ export default function ModeToggle() {
           style={{
             fontFamily: '.AppleSystemUIFont, -apple-system, "Helvetica Neue", sans-serif',
             fontSize: '12px',
-            fontWeight: 400,
+            fontWeight: 700,
             textShadow: '0 1px 3px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.5)',
           }}
         >
