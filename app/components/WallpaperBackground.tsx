@@ -118,26 +118,51 @@ export default function WallpaperBackground() {
         )}
       </div>
 
-      {/* Wallpaper notification toast */}
+      {/* macOS-style notification toast */}
       {toast && (
         <div
-          className={`fixed top-4 right-4 z-50 max-w-xs bg-black/70 backdrop-blur-md border border-white/20 rounded-lg px-4 py-3 text-white shadow-lg transition-all duration-500 ease-in-out ${
+          className={`fixed top-3 right-3 z-50 w-[340px] transition-all duration-300 ease-out ${
             toastVisible
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
+              ? "translate-y-0 opacity-100"
+              : "-translate-y-2 opacity-0 pointer-events-none"
           }`}
+          onClick={() => setToastVisible(false)}
+          style={{
+            background: 'rgba(43, 43, 43, 0.85)',
+            backdropFilter: 'blur(20px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+            borderRadius: '14px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.1) inset',
+            padding: '12px 14px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif',
+          }}
         >
-          <div className="flex items-start gap-2">
-            <div className="flex-1">
-              <p className="text-sm font-medium">{toast.name}</p>
-              <p className="text-xs text-white/70 mt-0.5">{toast.description}</p>
-            </div>
-            <button
-              onClick={() => setToastVisible(false)}
-              className="text-white/50 hover:text-white transition-colors text-lg leading-none -mt-0.5"
+          <div className="flex items-center gap-3">
+            {/* App icon */}
+            <div
+              className="shrink-0 flex items-center justify-center"
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '8px',
+                background: 'linear-gradient(180deg, #3a3a3c 0%, #2c2c2e 100%)',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+              }}
             >
-              &times;
-            </button>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="2" y="2" width="20" height="20" rx="3" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5"/>
+                <path d="M7 17l3-4 2.5 3L16 12l5 5" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="9" cy="9" r="2" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5"/>
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p style={{ fontSize: '13px', fontWeight: 600, color: '#ffffff', margin: 0, lineHeight: '16px' }}>
+                {toast.name}
+              </p>
+              <p style={{ fontSize: '12px', fontWeight: 400, color: 'rgba(255,255,255,0.6)', margin: '2px 0 0', lineHeight: '15px' }} className="line-clamp-2">
+                {toast.description}
+              </p>
+            </div>
           </div>
         </div>
       )}
