@@ -30,6 +30,7 @@ export default function WallpaperBackground() {
   const [transitioning, setTransitioning] = useState(false);
   const [toast, setToast] = useState<Wallpaper | null>(null);
   const [toastVisible, setToastVisible] = useState(false);
+  const [toastHovered, setToastHovered] = useState(false);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -121,12 +122,19 @@ export default function WallpaperBackground() {
       {/* macOS-style notification toast */}
       {toast && (
         <div
-          className={`fixed top-3 right-3 z-50 w-[360px] transition-all duration-300 ease-out ${
+          className={`fixed top-3 right-3 z-50 w-[360px] transition-all duration-700 ease-in-out group relative ${
             toastVisible
               ? "translate-x-0 opacity-100"
               : "translate-x-[calc(100%+12px)] opacity-0 pointer-events-none"
           }`}
-          onClick={() => setToastVisible(false)}
+          onMouseEnter={() => {
+            setToastHovered(true);
+            if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+          }}
+          onMouseLeave={() => {
+            setToastHovered(false);
+            toastTimeoutRef.current = setTimeout(() => setToastVisible(false), TOAST_DURATION);
+          }}
           style={{
             background: 'rgba(43, 43, 43, 0.85)',
             backdropFilter: 'blur(20px) saturate(180%)',
@@ -137,24 +145,28 @@ export default function WallpaperBackground() {
             fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif',
           }}
         >
+          {/* macOS close button — visible on hover */}
+          <button
+            onClick={() => setToastVisible(false)}
+            className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-[#3a3a3c] border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-[#4a4a4c]"
+          >
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+              <path d="M1 1l6 6M7 1l-6 6" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeLinecap="round"/>
+            </svg>
+          </button>
+
           <div className="flex items-center gap-3">
             {/* App icon */}
-            <div
-              className="shrink-0 flex items-center justify-center"
+            <img
+              src="/assets/photos-icon.webp"
+              alt=""
+              className="shrink-0"
               style={{
                 width: '36px',
                 height: '36px',
                 borderRadius: '8px',
-                background: 'linear-gradient(180deg, #3a3a3c 0%, #2c2c2e 100%)',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
               }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <rect x="2" y="2" width="20" height="20" rx="3" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5"/>
-                <path d="M7 17l3-4 2.5 3L16 12l5 5" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="9" cy="9" r="2" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5"/>
-              </svg>
-            </div>
+            />
             <div className="flex-1 min-w-0">
               <p style={{ fontSize: '13px', fontWeight: 600, color: '#ffffff', margin: 0, lineHeight: '16px' }}>
                 {toast.name}
