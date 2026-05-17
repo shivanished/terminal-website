@@ -17,7 +17,7 @@ export default function ModeToggle() {
       <button
         onClick={toggleMode}
         aria-label="Switch to Plain Mode"
-        className="fixed top-4 right-4 z-40 flex flex-col items-center gap-0.5 cursor-default"
+        className="fixed top-4 right-8 z-40 flex flex-col items-center gap-0.5 cursor-default"
       >
         <img
           src="/assets/folder-icon.png"
