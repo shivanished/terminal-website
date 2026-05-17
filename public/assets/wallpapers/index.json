@@ -22,7 +22,7 @@
         },
         {
             "name": "The Eiffel Tower",
-            "path": "eiffel.jpg",
+            "path": "eiffel.jpeg",
             "description": "The view of the Eiffel Tower from the Basilique du Sacré-Cœur de Montmartre."
         },
         {
@@ -39,26 +39,6 @@
             "name": "Spring in Switzerland",
             "path": "spring-switzerland.jpeg",
             "description": "Switzerland in spring was half frozen, half melted, and half in bloom. It was a stunning sight."
-        },
-        {
-            "name": "Pike's Place",
-            "path": "seattle.jpeg",
-            "description": "Wesley, me, and Aathma (left to right) at Pike's Place Market in Seattle. FreeV X Seattle 2025."
-        },
-        {
-            "name": "Dutch Tile Painting",
-            "path": "dutch-tiles.jpeg",
-            "description": "My friends and I painted these Dutch tiles in the Netherlands. Which one's your favorite?"
-        },
-        {
-            "name": "Chakkas Only!",
-            "path": "straight-chakkas.jpeg",
-            "description": "Playing cricket for the first time in India. My cousin Aneri (not in this photo) got married later that day!"
-        },
-        {
-            "name": "Roaming Paris",
-            "path": "roaming-paris.jpeg",
-            "description": "Roaming Paris with my friends. A night I won't forget."
         },
         {
             "name": "Tulips in the Netherlands",
