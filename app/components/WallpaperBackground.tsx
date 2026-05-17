@@ -99,7 +99,7 @@ export default function WallpaperBackground() {
   return (
     <>
       {/* Background images — click to advance */}
-      <div className="absolute inset-0 z-0 cursor-pointer" onClick={advance}>
+      <div className="absolute inset-0 z-0">
         <img
           src={imgSrc(wallpapers[currentIndex])}
           alt=""
