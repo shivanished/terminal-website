@@ -12,8 +12,19 @@ const CYCLE_INTERVAL = 30000;
 const TRANSITION_DURATION = 1500;
 const TOAST_DURATION = 5000;
 
+function shuffle<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 export default function WallpaperBackground() {
   const [wallpapers, setWallpapers] = useState<Wallpaper[]>([]);
+  const [order, setOrder] = useState<number[]>([]);
+  const [orderPos, setOrderPos] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState<number | null>(null);
   const [transitioning, setTransitioning] = useState(false);
@@ -25,9 +36,15 @@ export default function WallpaperBackground() {
     fetch("/assets/wallpapers/index.json")
       .then((res) => res.json())
       .then((data) => {
-        setWallpapers(data.wallpapers);
-        if (data.wallpapers.length > 0) {
-          setToast(data.wallpapers[0]);
+        const wps: Wallpaper[] = data.wallpapers;
+        setWallpapers(wps);
+        if (wps.length > 0) {
+          const indices = Array.from({ length: wps.length }, (_, i) => i);
+          const shuffled = shuffle(indices);
+          setOrder(shuffled);
+          setCurrentIndex(shuffled[0]);
+          setOrderPos(0);
+          setToast(wps[shuffled[0]]);
           setToastVisible(true);
           toastTimeoutRef.current = setTimeout(() => setToastVisible(false), TOAST_DURATION);
         }
@@ -36,11 +53,27 @@ export default function WallpaperBackground() {
 
   const advance = useCallback(() => {
     if (wallpapers.length <= 1) return;
-    const next = (currentIndex + 1) % wallpapers.length;
+    if (transitioning) return;
+
+    let newOrder = order;
+    let newPos = orderPos + 1;
+
+    // Reshuffle when we've gone through all
+    if (newPos >= newOrder.length) {
+      newOrder = shuffle(Array.from({ length: wallpapers.length }, (_, i) => i));
+      // Avoid starting with same image that just showed
+      if (newOrder[0] === currentIndex && newOrder.length > 1) {
+        [newOrder[0], newOrder[1]] = [newOrder[1], newOrder[0]];
+      }
+      setOrder(newOrder);
+      newPos = 0;
+    }
+
+    const next = newOrder[newPos];
+    setOrderPos(newPos);
     setNextIndex(next);
     setTransitioning(true);
 
-    // Show toast
     setToast(wallpapers[next]);
     setToastVisible(true);
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
@@ -51,7 +84,7 @@ export default function WallpaperBackground() {
       setNextIndex(null);
       setTransitioning(false);
     }, TRANSITION_DURATION);
-  }, [wallpapers, currentIndex]);
+  }, [wallpapers, currentIndex, order, orderPos, transitioning]);
 
   useEffect(() => {
     if (wallpapers.length <= 1) return;
@@ -65,8 +98,8 @@ export default function WallpaperBackground() {
 
   return (
     <>
-      {/* Background images */}
-      <div className="absolute inset-0 z-0">
+      {/* Background images — click to advance */}
+      <div className="absolute inset-0 z-0 cursor-pointer" onClick={advance}>
         <img
           src={imgSrc(wallpapers[currentIndex])}
           alt=""
