@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { createPortal } from "react-dom";
 
 interface Wallpaper {
   name: string;
@@ -120,10 +119,10 @@ export default function WallpaperBackground() {
         )}
       </div>
 
-      {/* macOS-style notification toast — portaled to body to escape overflow/transform contexts */}
-      {toast && createPortal(
+      {/* macOS-style notification toast */}
+      {toast && (
         <div
-          className={`fixed top-3 right-3 z-50 w-[360px] transition-all duration-700 ease-in-out group relative ${
+          className={`fixed top-3 right-3 z-50 w-[360px] transition-all duration-700 ease-in-out group ${
             toastVisible
               ? "translate-x-0 opacity-100"
               : "translate-x-[calc(100%+12px)] opacity-0 pointer-events-none"
@@ -177,8 +176,7 @@ export default function WallpaperBackground() {
               </p>
             </div>
           </div>
-        </div>,
-        document.body
+        </div>
       )}
     </>
   );
