@@ -121,10 +121,10 @@ export default function WallpaperBackground() {
       {/* macOS-style notification toast */}
       {toast && (
         <div
-          className={`fixed top-3 right-3 z-50 w-[340px] transition-all duration-300 ease-out ${
+          className={`fixed top-3 right-3 z-50 w-[360px] transition-all duration-300 ease-out ${
             toastVisible
-              ? "translate-y-0 opacity-100"
-              : "-translate-y-2 opacity-0 pointer-events-none"
+              ? "translate-x-0 opacity-100"
+              : "translate-x-[calc(100%+12px)] opacity-0 pointer-events-none"
           }`}
           onClick={() => setToastVisible(false)}
           style={{
@@ -159,7 +159,7 @@ export default function WallpaperBackground() {
               <p style={{ fontSize: '13px', fontWeight: 600, color: '#ffffff', margin: 0, lineHeight: '16px' }}>
                 {toast.name}
               </p>
-              <p style={{ fontSize: '12px', fontWeight: 400, color: 'rgba(255,255,255,0.6)', margin: '2px 0 0', lineHeight: '15px' }} className="line-clamp-2">
+              <p style={{ fontSize: '12px', fontWeight: 400, color: 'rgba(255,255,255,0.6)', margin: '2px 0 0', lineHeight: '15px' }}>
                 {toast.description}
               </p>
             </div>
