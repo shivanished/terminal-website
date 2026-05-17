@@ -14,6 +14,61 @@
             "name": "Lake Del Valle",
             "path": "delvalle.jpg",
             "description": "A beautiful lakeside hike in Livermore, California. My grand-big Maanvi seen stretching in the bottom left."
+        },
+        {
+            "name": "A Very Serious Hike",
+            "path": "grindelwald.jpg",
+            "description": "The base of a hike in Grindelwald, Switzerland. The view was breathtaking and ensueing cardio certainly was too."
+        },
+        {
+            "name": "The Eiffel Tower",
+            "path": "eiffel.jpg",
+            "description": "The view of the Eiffel Tower from the Basilique du Sacré-Cœur de Montmartre."
+        },
+        {
+            "name": "The Arc de Triomphe",
+            "path": "triomphe.jpg",
+            "description": "The view of the Arc de Triomphe from the Champs-Élysées. It was a beautiful day in Paris."
+        },
+        {
+            "name": "Lake Lucerne's Crisp Water",
+            "path": "lake-lucerne.jpeg",
+            "description": "The crisp water on Lake Lucerne, taken from the ferry ride. The air tasted like pure oxygen."
+        },
+        {
+            "name": "Spring in Switzerland",
+            "path": "spring-switzerland.jpeg",
+            "description": "Switzerland in spring was half frozen, half melted, and half in bloom. It was a stunning sight."
+        },
+        {
+            "name": "Pike's Place",
+            "path": "seattle.jpeg",
+            "description": "Wesley, me, and Aathma (left to right) at Pike's Place Market in Seattle. FreeV X Seattle 2025."
+        },
+        {
+            "name": "Dutch Tile Painting",
+            "path": "dutch-tiles.jpeg",
+            "description": "My friends and I painted these Dutch tiles in the Netherlands. Which one's your favorite?"
+        },
+        {
+            "name": "Chakkas Only!",
+            "path": "straight-chakkas.jpeg",
+            "description": "Playing cricket for the first time in India. My cousin Aneri (not in this photo) got married later that day!"
+        },
+        {
+            "name": "Roaming Paris",
+            "path": "roaming-paris.jpeg",
+            "description": "Roaming Paris with my friends. A night I won't forget."
+        },
+        {
+            "name": "Tulips in the Netherlands",
+            "path": "tulips-in-amsterdam.jpeg",
+            "description": "Tulips in the Keukenhof Gardens in the Netherlands. And a really sick windmill in the background."
+        },
+        {
+            "name": "A Maze",
+            "path": "maze.jpeg",
+            "description": "A maze in the Keukenhof Gardens in the Netherlands. 40km out from Amsterdam."
         }
     ]
 }
