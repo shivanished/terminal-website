@@ -34,7 +34,7 @@ export default function ModeToggle() {
             textShadow: '0 1px 3px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.5)',
           }}
         >
-          Plain
+          plain-website
         </span>
       </button>
     );
