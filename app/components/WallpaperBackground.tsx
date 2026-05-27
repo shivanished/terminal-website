@@ -105,16 +105,18 @@ export default function WallpaperBackground() {
   return (
     <>
       {/* Background images — click to advance */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none select-none">
         <img
           src={imgSrc(wallpapers[currentIndex])}
           alt=""
+          draggable={false}
           className="absolute inset-0 w-full h-full object-cover"
         />
         {nextIndex !== null && (
           <img
             src={imgSrc(wallpapers[nextIndex])}
             alt=""
+            draggable={false}
             className="absolute inset-0 w-full h-full object-cover transition-opacity ease-in-out"
             style={{
               transitionDuration: `${TRANSITION_DURATION}ms`,

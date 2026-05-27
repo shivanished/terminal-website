@@ -122,21 +122,34 @@ export default function Home() {
     loadData();
   }, []);
 
-  // Set html and body background color based on mode
+  // Set html and body background color based on mode.
+  // Lock document scroll in TUI mode so trackpad two-finger pan can't rubber-band the wallpaper.
   useEffect(() => {
-    if (typeof document !== "undefined") {
-      const html = document.documentElement;
-      const body = document.body;
+    if (typeof document === "undefined") return;
+    const html = document.documentElement;
+    const body = document.body;
 
-      if (mode === "plain") {
-        html.style.backgroundColor = "#ffffff";
-        body.style.backgroundColor = "#ffffff";
-      } else {
-        html.style.backgroundColor = "#1a1a2e";
-        body.style.backgroundColor = "#1a1a2e";
-      }
+    if (mode === "plain") {
+      html.style.backgroundColor = "#ffffff";
+      body.style.backgroundColor = "#ffffff";
+    } else {
+      html.style.backgroundColor = "#1a1a2e";
+      body.style.backgroundColor = "#1a1a2e";
     }
-  }, [mode]);
+
+    const lock = mode === "tui" && !isMobile;
+    if (lock) {
+      html.style.overflow = "hidden";
+      body.style.overflow = "hidden";
+      html.style.overscrollBehavior = "none";
+      body.style.overscrollBehavior = "none";
+    } else {
+      html.style.overflow = "";
+      body.style.overflow = "";
+      html.style.overscrollBehavior = "";
+      body.style.overscrollBehavior = "";
+    }
+  }, [mode, isMobile]);
 
   const colors = {
     reset: "\x1b[0m",
