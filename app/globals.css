@@ -26,10 +26,22 @@ html, body {
   height: 100%;
 }
 
+html {
+  background: var(--background);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-mono), 'Courier New', monospace;
+}
+
+/* Plain mode: white canvas from first paint (set by the inline script in layout.tsx)
+   so overscroll / rubber-band never reveals the dark TUI background. */
+html[data-mode="plain"],
+html[data-mode="plain"] body,
+html[data-mode="plain"] .mode-placeholder {
+  background: #ffffff;
 }
 
 /* Terminal container styling */

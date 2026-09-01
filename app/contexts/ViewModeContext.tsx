@@ -36,6 +36,7 @@ export function ViewModeProvider({ children }: { children: ReactNode }) {
 
   const setMode = (newMode: ViewMode) => {
     setModeState(newMode);
+    document.documentElement.dataset.mode = newMode;
 
     try {
       localStorage.setItem('viewMode', newMode);
@@ -56,7 +57,7 @@ export function ViewModeProvider({ children }: { children: ReactNode }) {
 
   // Prevent hydration mismatch by not rendering children until mounted
   if (!mounted) {
-    return <div className="h-screen w-screen bg-black" />;
+    return <div className="mode-placeholder h-screen w-screen bg-black" />;
   }
 
   return (
