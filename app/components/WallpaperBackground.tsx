@@ -21,7 +21,14 @@ function shuffle<T>(array: T[]): T[] {
   return arr;
 }
 
-export default function WallpaperBackground() {
+interface WallpaperBackgroundProps {
+  /** True once the boot screen has finished; gates toast, cycling, and background preloads */
+  active: boolean;
+  /** Fired once the first wallpaper is fully downloaded and decoded (or failed) */
+  onFirstImageReady?: () => void;
+}
+
+export default function WallpaperBackground({ active, onFirstImageReady }: WallpaperBackgroundProps) {
   const [wallpapers, setWallpapers] = useState<Wallpaper[]>([]);
   const [order, setOrder] = useState<number[]>([]);
   const [orderPos, setOrderPos] = useState(0);
@@ -32,30 +39,72 @@ export default function WallpaperBackground() {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastHovered, setToastHovered] = useState(false);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const onFirstImageReadyRef = useRef(onFirstImageReady);
+  useEffect(() => {
+    onFirstImageReadyRef.current = onFirstImageReady;
+  }, [onFirstImageReady]);
+  const introShownRef = useRef(false);
 
   useEffect(() => {
+    let cancelled = false;
     fetch("/assets/wallpapers/index.json")
       .then((res) => res.json())
       .then((data) => {
+        if (cancelled) return;
         const wps: Wallpaper[] = data.wallpapers;
-        setWallpapers(wps);
-        // Preload all images so they're cached for instant display
-        wps.forEach((wp) => {
-          const img = new Image();
-          img.src = `/assets/wallpapers/${wp.path}`;
-        });
-        if (wps.length > 0) {
-          const indices = Array.from({ length: wps.length }, (_, i) => i);
-          const shuffled = shuffle(indices);
-          setOrder(shuffled);
-          setCurrentIndex(shuffled[0]);
-          setOrderPos(0);
-          setToast(wps[shuffled[0]]);
-          setToastVisible(true);
-          toastTimeoutRef.current = setTimeout(() => setToastVisible(false), TOAST_DURATION);
+        if (wps.length === 0) {
+          onFirstImageReadyRef.current?.();
+          return;
         }
-      });
+        const shuffled = shuffle(Array.from({ length: wps.length }, (_, i) => i));
+        setWallpapers(wps);
+        setOrder(shuffled);
+        setCurrentIndex(shuffled[0]);
+        setOrderPos(0);
+
+        // Download + decode only the first wallpaper before reporting ready.
+        // Remaining wallpapers are preloaded later (see `active` effect) so they
+        // don't compete for bandwidth with this one.
+        const img = new Image();
+        img.src = `/assets/wallpapers/${wps[shuffled[0]].path}`;
+        const done = () => { if (!cancelled) onFirstImageReadyRef.current?.(); };
+        img.decode().then(done, done);
+      })
+      .catch(() => onFirstImageReadyRef.current?.());
+    return () => { cancelled = true; };
   }, []);
+
+  // After boot: show intro toast once, then warm the cache for the rest.
+  useEffect(() => {
+    if (!active || wallpapers.length === 0 || introShownRef.current) return;
+    introShownRef.current = true;
+
+    // Slide the toast in just after the boot screen has faded
+    let fired = false;
+    const introTimer = setTimeout(() => {
+      fired = true;
+      setToast(wallpapers[currentIndex]);
+      setToastVisible(true);
+      toastTimeoutRef.current = setTimeout(() => setToastVisible(false), TOAST_DURATION);
+    }, 300);
+
+    const preloadRest = () => {
+      wallpapers.forEach((wp, i) => {
+        if (i === currentIndex) return;
+        const img = new Image();
+        img.src = `/assets/wallpapers/${wp.path}`;
+      });
+    };
+    if (typeof requestIdleCallback === "function") {
+      requestIdleCallback(preloadRest, { timeout: 3000 });
+    } else {
+      setTimeout(preloadRest, 1000);
+    }
+    return () => {
+      clearTimeout(introTimer);
+      if (!fired) introShownRef.current = false; // StrictMode re-run: let it try again
+    };
+  }, [active, wallpapers, currentIndex]);
 
   const advance = useCallback(() => {
     if (wallpapers.length <= 1) return;
@@ -93,10 +142,10 @@ export default function WallpaperBackground() {
   }, [wallpapers, currentIndex, order, orderPos, transitioning]);
 
   useEffect(() => {
-    if (wallpapers.length <= 1) return;
+    if (!active || wallpapers.length <= 1) return;
     const interval = setInterval(advance, CYCLE_INTERVAL);
     return () => clearInterval(interval);
-  }, [advance, wallpapers.length]);
+  }, [active, advance, wallpapers.length]);
 
   if (wallpapers.length === 0) return null;
 
@@ -110,6 +159,7 @@ export default function WallpaperBackground() {
           src={imgSrc(wallpapers[currentIndex])}
           alt=""
           draggable={false}
+          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover"
         />
         {nextIndex !== null && (
