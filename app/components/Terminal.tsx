@@ -18,14 +18,17 @@ interface TerminalComponentProps {
   getPrompt: () => string;
   getPromptRaw: () => string;
   vfs: VirtualFileSystem;
+  /** When false (boot screen still up), the intro typewriter waits. Defaults to true. */
+  booted?: boolean;
 }
 
-export default function TerminalComponent({ onCommandExecute, getPrompt, getPromptRaw, vfs }: TerminalComponentProps) {
+export default function TerminalComponent({ onCommandExecute, getPrompt, getPromptRaw, vfs, booted = true }: TerminalComponentProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
   const terminalInstanceRef = useRef<Terminal | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [isTypewriterActive, setIsTypewriterActive] = useState(true);
+  const typewriterStartedRef = useRef(false);
 
   useEffect(() => {
     if (!terminalRef.current || terminalInstanceRef.current) return;
@@ -98,33 +101,7 @@ export default function TerminalComponent({ onCommandExecute, getPrompt, getProm
 
       setupInputHandling(term, onCommandExecute, vfs);
 
-      const typewriterText = 'cat about.txt';
-      let charIndex = 0;
-      
-      const typeNextChar = () => {
-        if (charIndex < typewriterText.length) {
-          const char = typewriterText[charIndex];
-          (term as any).triggerData?.(char);
-          charIndex++;
-          setTimeout(typeNextChar, 100);
-        } else {
-          setTimeout(() => {
-            (term as any).triggerData?.('\r');
-            setTimeout(() => {
-              (term as any).isTypewriterActive = false;
-              setIsTypewriterActive(false);
-              scrollToBottom(term);
-              term.focus();
-            }, 100);
-          }, 500);
-        }
-      };
-      
-      setTimeout(() => {
-        (term as any).isTypewriterActive = true;
-        typeNextChar();
-      }, 1000);
-
+      (term as any).isTypewriterActive = true;
       setIsReady(true);
 
       resizeHandler = () => {
@@ -190,6 +167,44 @@ export default function TerminalComponent({ onCommandExecute, getPrompt, getProm
       fitAddonRef.current = null;
     };
   }, [onCommandExecute, getPrompt, getPromptRaw, vfs]);
+
+  // Intro typewriter: runs once, only after the terminal is ready AND the boot screen is gone.
+  // Reads the terminal from the ref on every tick so a re-initialized instance still receives input.
+  useEffect(() => {
+    if (!isReady || !booted || typewriterStartedRef.current) return;
+    typewriterStartedRef.current = true;
+
+    const timers: NodeJS.Timeout[] = [];
+    const later = (fn: () => void, ms: number) => { timers.push(setTimeout(fn, ms)); };
+    const typewriterText = 'cat about.txt';
+    let charIndex = 0;
+
+    const typeNextChar = () => {
+      const term = terminalInstanceRef.current as any;
+      if (!term) return;
+      if (charIndex < typewriterText.length) {
+        term.triggerData?.(typewriterText[charIndex]);
+        charIndex++;
+        later(typeNextChar, 100);
+      } else {
+        later(() => {
+          term.triggerData?.('\r');
+          later(() => {
+            term.isTypewriterActive = false;
+            setIsTypewriterActive(false);
+            scrollToBottom(term);
+            term.focus();
+          }, 100);
+        }, 500);
+      }
+    };
+
+    later(typeNextChar, 1000);
+    return () => {
+      timers.forEach(clearTimeout);
+      typewriterStartedRef.current = false; // allow a clean restart (e.g. StrictMode double-invoke)
+    };
+  }, [isReady, booted]);
 
   // Block all user interaction during typewriter effect
   useEffect(() => {
