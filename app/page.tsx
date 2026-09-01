@@ -7,6 +7,7 @@ import PlainMode from "./components/PlainMode";
 import ModeToggle from "./components/ModeToggle";
 import TerminalWindow from "./components/TerminalWindow";
 import WallpaperBackground from "./components/WallpaperBackground";
+import BootScreen from "./components/BootScreen";
 import { VirtualFileSystem } from "./lib/filesystem";
 import { executeCommand as execCmd } from "./lib/commands";
 import type { Experience, Project, Links } from "./types";
@@ -31,6 +32,9 @@ export default function Home() {
     instagram: "",
   });
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [fontsReady, setFontsReady] = useState(false);
+  const [wallpaperReady, setWallpaperReady] = useState(false);
+  const [booted, setBooted] = useState(false);
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [isMobile, setIsMobile] = useState(false);
   const vfsRef = useRef<VirtualFileSystem>(new VirtualFileSystem());
@@ -93,6 +97,23 @@ export default function Home() {
     }
   }, []);
 
+  // Boot task: web fonts (Geist / Tinos) finished loading
+  useEffect(() => {
+    if (typeof document === "undefined" || !("fonts" in document)) {
+      setFontsReady(true);
+      return;
+    }
+    let cancelled = false;
+    const done = () => { if (!cancelled) setFontsReady(true); };
+    document.fonts.ready.then(done, done);
+    // Safety net: never let a stuck font block boot
+    const t = setTimeout(done, 3000);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, []);
+
+  const onWallpaperReady = useCallback(() => setWallpaperReady(true), []);
+  const onBootComplete = useCallback(() => setBooted(true), []);
+
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -116,6 +137,7 @@ export default function Home() {
         setDataLoaded(true);
       } catch (error) {
         console.error("Error loading data:", error);
+        setDataLoaded(true); // don't strand the boot screen; commands will report the error
       }
     };
 
@@ -206,6 +228,8 @@ export default function Home() {
   }, []);
 
   const showTui = mode === "tui" && !isMobile;
+  const bootTasks = [dataLoaded, fontsReady, wallpaperReady];
+  const bootProgress = bootTasks.filter(Boolean).length / bootTasks.length;
 
   return (
     <>
@@ -218,15 +242,17 @@ export default function Home() {
             background: "#1a1a2e",
           }}
         >
-          <WallpaperBackground />
+          <WallpaperBackground active={booted} onFirstImageReady={onWallpaperReady} />
           <TerminalWindow>
             <TerminalComponent
               onCommandExecute={executeCommand}
               getPrompt={getPrompt}
               getPromptRaw={getPromptRaw}
               vfs={vfsRef.current}
+              booted={booted}
             />
           </TerminalWindow>
+          {!booted && <BootScreen progress={bootProgress} onComplete={onBootComplete} />}
         </div>
       ) : (
         <div className="min-h-screen w-full bg-white">
